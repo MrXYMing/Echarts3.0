@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>全国总仓干线</title>
+    <link type="text/css" rel="stylesheet" href="./Src/jquery.mCustomScrollbar.min.css">
+    <link type="text/css" rel="stylesheet" href="./Src/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="./Src/bootstrap-select.min.css">
+    <link type="text/css" rel="stylesheet" href="./Src/style.css">
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div class="box">
+        <div id="main"></div>
+        <div id="minor"></div>
+        <div class="back">返回</div>
+        <!--<div class="legendbox" tabIndex="0" onmouseleave="$S.legendOnblur(event)">
+            <div class="styled-select"></div>
+            <div class="ulbox mCustomScrollbar" data-mcs-theme="minimal">
+                <ul class="legend" id="legend"></ul>
+            </div>
+        </div>-->
+        <!--<span class="settime">关闭刷新</span>-->
+        <div class="showtime"></div>
+
+        <div class="filterdatabox">
+            <div class="container filterdata mCustomScrollbar" data-mcs-theme="minimal">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="basic" class="col-lg-3 control-label">中心仓库</label>
+                        <div class="col-lg-9 CenterWarehouse"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="basic" class="col-lg-3 control-label">省仓</label>
+                        <div class="col-lg-9 ProvinceWarehouse"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="basic" class="col-lg-3 control-label">运输方式</label>
+                        <div class="col-lg-9 TransportType"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="basic" class="col-lg-3 control-label">单据类型</label>
+                        <div class="col-lg-9 OrderType"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="basic" class="col-lg-3 control-label">品牌</label>
+                        <div class="col-lg-9 BrandType"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="basic" class="col-lg-3 control-label">商品代码</label>
+                        <div class="col-lg-9 Material">
+                            <input type="text" class="form-control" style="width:220px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="basic" class="col-lg-3 control-label">时效</label>
+                        <div class="col-lg-9 TimeOut">
+                            <label class="checkbox-inline">
+                            <input type="checkbox" name="timeout" value="1"> 超时
+                        </label>
+                            <label class="checkbox-inline">
+                            <input type="checkbox" name="timeout" value="2"> 未超时
+                         </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="btn btn-primary btn-sm searchBtn col-lg-2 col-lg-offset-9">查询</span>
+                    </div>
+                </form>
+            </div>
+            <div class="togglefilter">
+                <div class="togglefilterbtn">干线运输</div>
+            </div>
+        </div>
+
+
+
+        <div class="recordsbox mCustomScrollbar" data-mcs-theme="minimal">
+            <div class="records"></div>
+        </div>
+        <!--<div class="legend">
+            
+        </div>-->
+        <div class="waybillList">
+            <div class="waybilltitle">
+                <div class="statetitle"></div>
+                <div class="CloseWaybill" onclick="$S.CloseWaybill()"></div>
+            </div>
+            <div class="table">
+                <div class="thead">
+                    <div class="clearfloat">
+                        <label>&nbsp;</label>
+                        <label>发货日期</label>
+                        <label>快递单号</label>
+                        <label>数量</label>
+                        <label>承诺用时</label>
+                        <label>当前用时</label>
+                        <label>商品描述</label>
+                    </div>
+                </div>
+                <div class="tbodybox mCustomScrollbar" data-mcs-theme="minimal">
+                    <div class="tbody">
+                        <div>
+                            <label>获取运单清单中，请稍后...</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbox">
+            <ul>
+                <li class="showLabel">隐藏</li>
+            </ul>
+        </div>
+
+        <div class="detailsbox">
+            <div class="table mCustomScrollbar" data-mcs-theme="minimal">
+                <div class="details"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./Scripts/jquery-2.2.3.min.js"></script>
+    <!-- ECharts单文件引入 -->
+    <script src="./Scripts/echarts.js"></script>
+    <script src="./Scripts/js/china.js"></script>
+    <script src="./Scripts/js/hebei.js"></script>
+    <script src="./Scripts/js/shanxi1.js"></script>
+    <script src="./Scripts/js/neimenggu.js"></script>
+
+
+    <script src="./Scripts/js/liaoning.js"></script>
+    <script src="./Scripts/js/jilin.js"></script>
+    <script src="./Scripts/js/heilongjiang.js"></script>
+    <script src="./Scripts/js/jiangsu.js"></script>
+    <script src="./Scripts/js/zhejiang.js"></script>
+    <script src="./Scripts/js/anhui.js"></script>
+    <script src="./Scripts/js/fujian.js"></script>
+    <script src="./Scripts/js/jiangxi.js"></script>
+    <script src="./Scripts/js/shandong.js"></script>
+    <script src="./Scripts/js/henan.js"></script>
+    <script src="./Scripts/js/hubei.js"></script>
+    <script src="./Scripts/js/hunan.js"></script>
+    <script src="./Scripts/js/guangdong.js"></script>
+    <script src="./Scripts/js/guangxi.js"></script>
+    <script src="./Scripts/js/hainan.js"></script>
+    <script src="./Scripts/js/sichuan.js"></script>
+    <script src="./Scripts/js/guizhou.js"></script>
+    <script src="./Scripts/js/yunnan.js"></script>
+    <script src="./Scripts/js/xizang.js"></script>
+    <script src="./Scripts/js/shanxi.js"></script>
+    <script src="./Scripts/js/gansu.js"></script>
+    <script src="./Scripts/js/qinghai.js"></script>
+    <script src="./Scripts/js/ningxia.js"></script>
+    <script src="./Scripts/js/xinjiang.js"></script>
+    <script src="./Scripts/js/beijing.js"></script>
+    <script src="./Scripts/js/tianjin.js"></script>
+    <script src="./Scripts/js/shanghai.js"></script>
+    <script src="./Scripts/js/chongqing.js"></script>
+    <script src="./Scripts/js/xianggang.js"></script>
+    <script src="./Scripts/js/aomen.js"></script>
+    <script src="./Scripts/js/taiwan.js"></script>
+
+    <script src="./Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="./Scripts/bootstrap.min.js"></script>
+    <script src="./Scripts/bootstrap-select.min.js"></script>
+    <script src="./Scripts/provinces01.js"></script>
+
+
+</body>
