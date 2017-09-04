@@ -28,7 +28,7 @@ body{
     width:300px;
     display:none;
 }
-.back{
+/*.back{
     position: absolute;
     top:0;
     left:160px;
@@ -40,6 +40,12 @@ body{
     color:#fff;
     font-size: 12px;
     display: none;
+}*/
+.back{
+    display: none;
+}
+.showback{
+    display: inline;
 }
 .settime{
     position: absolute;
@@ -144,46 +150,103 @@ body{
 /****筛选条件****/
 .filterdatabox{
     position: absolute;
-    top:200px;
-    bottom:50px;
-    left:0;
-    width:370px;
-    max-height: 380px;
-    background-color: rgb(64,74,89);
-    border:2px #fff solid;
+    top:0;
+    left:100px;
+    width:346px;
+    height:31px;
+    /*max-height: 442px;*/
+    background-color:transparent;
     border-left:none;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+    font-size: 16px;
+    color:#eaeaea;
+    z-index: 10;
 }
 .filterdata{
     position: absolute;
     top:0;
-    bottom:0;
+    bottom:31px;
     left:0;
-    width:350px;
-    max-height: 380px;
-    padding:5px 0;
+    right:0;
+    height:0;
     z-index: 20;
-    color:#fff;
-    background-color: rgb(64,74,89);
+    background-color: #151516;
+    border:1px #cfcfcf solid;
+    border-top:none;
     display: none;
 }
+/**修正bootstrap下拉框样式*/
 .filterdata .form-group:last-child{
     margin-bottom: 0;
+}
+.filterdata .form-horizontal .form-group{
+    margin:0 12px;
+    padding:10px 0;
+    border-bottom:1px #313131 solid;
+}
+.filterdata .form-horizontal .form-group .col-lg-3{
+    width:96px;
+    padding-left:0;
+    padding-right:0;
+    margin-right:14px;
+}
+.filterdata .form-horizontal .form-group .col-lg-9{
+    width:210px;
+    padding-left:0;
+    padding-right:0;
+}
+.filterdata .btn-default, .filterdata .btn-default.active, .filterdata .btn-default:active, .open>.dropdown-toggle.btn-default, .open>.dropdown-toggle.btn-default:hover, .filterdata .form-control{
+    background-color: #363636;
+    color:#eaeaea;
+}
+.filterdata .btn-default, .filterdata .btn-default.focus, .filterdata .btn-default:focus, .filterdata .form-control, .btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus, .btn-default:active:focus, .btn-default:active:hover, .open>.dropdown-toggle.btn-default.focus, .open>.dropdown-toggle.btn-default:focus, .open>.dropdown-toggle.btn-default:hover{
+    border:none;
+}
+.filterdata .bootstrap-select .dropdown-toggle:focus {
+    outline: 0 none transparent!important;
+}
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 210px;
+}
+.bootstrap-select.btn-group .dropdown-toggle .filter-option{
+    color:#eaeaea;
+}
+.filterdata .form-horizontal .control-label{
+    padding-top:4px;
+}
+.filterdata .form-horizontal .TimeOut{
+    padding-top:7px;
 }
 .filterdata .no-results{
     color:red;
 }
+.filterdata label{
+    font-weight: 500;
+}
+.bootstrap-select .btn{
+    padding-top:5px;
+    padding-bottom:5px;
+}
+/**修正END*/
 .togglefilter{
     position: absolute;
-    top:0;
     bottom:0;
     right:0;
-    width:18px;
-    max-height: 380px;
-    background-color: #4876FF;  
+    left:0;
+    height: 31px;
+    line-height: 30px;
+    background-color: #1d283b;  
+    cursor: pointer;
+    overflow-y: hidden;
+    border:1px #cfcfcf solid;
+    border-top:none;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    text-align: center;
 }
-.vertical-align:before{
+.togglefilterbtn{
+    font-weight: 700;
+}
+/*.vertical-align:before{
     content: '';
     display: inline-block;
     height: 100%;
@@ -191,21 +254,21 @@ body{
 }
 .vertical-align-middle{
     vertical-align: middle;
-}
+}*/
 /***筛选条件 END***/
 
 
-.label{
+/*.label{
     float:left;
     display: block;
     width:20px;
     height:12px;
     margin:0 5px;
     background-color: #ccc;
-}
-.active{
+}*/
+/*.active{
     background-color: orange;
-}
+}*/
 .title{
     float:left;
     display: block;
@@ -221,20 +284,22 @@ body{
     top:38px;
     right:0;
     /*width:312px;*/
-    width:350px;
-    height:172px;
+    width:634px;
+    height:400px;
     display: none;
-    color:#fff;
+    background-color: #e5e5e5;
+    color:#2c2c2c;
     overflow: hidden;
+    padding-right:15px;
+    padding-left:15px;
+    border-radius:10px;
 }
 .waybilltitle{
     position: absolute;
     top:0;
-    left:0;
-    /*width:312px;*/
-    width:348px;
-    height:22px;
-    border:1px #ccc solid;
+    width:608px;
+    height:50px;
+    border-bottom:1px #d6d6d6 solid;
     display: block;
     color:#fff;
     overflow: hidden;
@@ -243,43 +308,134 @@ body{
 .waybilltitle .statetitle{
     position: absolute;
     left:0;
-    width:330px;
-    line-height: 22px;
+    width:100%;
+    line-height: 50px;
     text-align: center;
+    font-size: 24px;
+    font-weight: 600;
 }
+/*.test{
+    font-size: 30px;
+}
+.test:after{
+    content: "\00B7";
+    display: inline;
+    width: 100%;
+    height:100%;
+}*/
 .waybilltitle .statetitle .Highlight{
-    color:#FF4500;
+    color:#d13b2f;
 }
-.CloseWaybill{
+.waybilltitle .CloseWaybill{
     position: absolute;
     width:20px;
+    top:13px;
     right:0;
     display: block;
     height:20px;
-    background-image: url(g.png);
+    background-image: url(images/g.png);
     cursor: pointer;
 }
 .waybillList .table{
-    /*margin-left:20px;*/
     position: absolute;
-    top:22px;
-    width:348px;
-    height:148px;
-    border:1px #8D8D8D solid;
-    font-size: 12px;
+    top:50px;
+    width:608px;
+    height:340px;
+    font-size: 14px;
+    margin-bottom:0;
 }
 .waybillList .table .thead{
     font-weight: 600;
+    height:40px;
+    line-height: 40px;
+    border-bottom:1px #c9c9c9 solid;
+}
+.waybillList .table .thead >label{
+    margin-bottom: 0;
+    display: block;
+    float: left;
+    color:#2c2c2c;
+    font-size: 12px;
+    font-weight: 600;
+    padding-left:10px;
+    padding-right:10px;
+    text-align: center;
+}
+.waybillList .table .thead >label:nth-child(1){
+    margin-left:173px;
+    width: 158px;
+    padding-left:15px;
+    padding-right:5px;
+    text-align: left;
+}
+.waybillList .table .thead >label:nth-child(2){
+    width: 80px;
+}
+.waybillList .table .thead >label:nth-child(3){
+    width: 106px;
+}
+.waybillList .table .thead >label:nth-child(4){
+    width: 91px;
 }
 .waybillList .tbodybox{
     width:100%;
-    /*height:130px;*/
     height:0;
 }
-.waybillList .table div>label{
+.waybillList .table .tbodybox .btnclick{
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px #c9c9c9 solid;
+    cursor: pointer;
+}
+.waybillList .table .tbodybox .btnclick:last-child{
+    border-bottom: none;
+}
+.waybillList .table .tbodybox .btnclick>label{
+    color:#2c2c2c;
     display: block;
     float: left;
-    /*width:auto;*/
+    text-align: center;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    font-weight: 500;
+    margin-bottom: 0;
+    padding-left:10px;
+    padding-right:10px;
+    cursor: pointer;
+}
+.waybillList .table .tbodybox .btnclick>label:nth-child(1){
+    color:#656565;
+    font-size: 16px;
+    width:121px;
+}
+.waybillList .table .tbodybox .btnclick>label:nth-child(2){
+    width:52px;
+    text-align: right;
+}
+.waybillList .table .tbodybox .btnclick>label:nth-child(3){
+    width:158px;
+    padding-left:15px;
+    padding-right:5px;
+    text-align: left;
+}
+.waybillList .table .tbodybox .btnclick>label:nth-child(4){
+    width:80px;
+}
+.waybillList .table .tbodybox .btnclick>label:nth-child(5){
+    width:106px;
+}
+.waybillList .table .tbodybox .btnclick>label:nth-child(6){
+    width:91px;
+}
+
+
+.timeOut{
+    background-color: #d13b2f;
+}
+/*.waybillList .table div>label{
+    display: block;
+    float: left;
     width:50px;
     text-align: left;
     overflow:hidden;
@@ -288,10 +444,11 @@ body{
     cursor: pointer;
 
 }
+
 .waybillList .table div>label:nth-child(1){
     width:30px;
 }
-/*.waybillList .table div>label:nth-child(1){
+.waybillList .table div>label:nth-child(1){
     width:104px;
 }
 .waybillList .table div>label:nth-child(2){
@@ -303,117 +460,71 @@ body{
 .waybillList .table div>label:nth-child(4){
     width:59px;
 }*/
-.timeOut{
-    background-color: #f00;
-}
-.tbody div{
-    border-top:1px #8D8D8D solid;
-}
-.tbody div:hover{
-    background-color: #666;
-}
-.select{
-    background-color: #666;
-}
-.tbody div>label:not(:first-child){
-    border-left:1px #8D8D8D solid;
-}
+
+/***订单详情**/
 .detailsbox{
     position: absolute;
-    top:210px;
-    right:0;
+    top:50px;
+    left:0;
+    bottom:0;
     /*width:350px;*/
-    width:350px;
-    height:230px;
-    color:#405C8E;
+    width:698px;
+    max-height:604px;
+    color:#fff;
+    background-color: transparent;
     overflow: hidden;
     font-size: 10px;
     display: none;
 }
 .detailsbox .table{
-    width:348px;
-    height:228px;
-    border:1px #8D8D8D solid;
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    max-height:604px;
+    margin-bottom: 0;
 }
-.details{
-    /*display: none;*/
+/**订单信息*/
+.OrderInfo{
+    height:50px;
+    line-height: 50px;
+    background-color: #cdcdcd;
+    padding-right:20px;
+    padding-left:20px;
+    color:#2c2c2c;
+    font-weight: 600;
+    font-size: 14px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
 }
-.details .item label,.details .subitem label{
-    display: block;
-    float: left;
-    width:auto;
-    line-height: 16px;
+.OrderInfo  label{
+    text-align: right;
+    margin-bottom: 0;
+    padding-right:10px;
+}
+.OrderInfo span{
     text-align: left;
-    word-break:break-all;
-    overflow: visible;
+    padding-left:0;
 }
-.details .item{
-    margin-left:5px;
-    border-left:1px #ccc solid;
-    position: relative;
-}
-.details .item:not(:first-child){
-    padding-top:10px;
-}
-
-.details .item label:last-child{
-    position: absolute;
-    background-color: #FFDAB9;
-    border-radius: 50%;
-    width:12px;
-    height:12px;
-    left:-6px;
-    top:2px;
-}
-.details .item:not(:first-child) label:last-child{
-    top:12px;
-    background-color: #fff;
-}
-.details .item label:last-child span{
-    position: absolute;
-    background-color: red;
-    border-radius: 50%;
-    width:6px;
-    height:6px;
-    left:3px;
-    top:3px;
-}
-.details .item:not(:first-child) label:last-child span{
-    background-color: #ccc;
-}
-
-/*.details .item label:nth-child(1){
-    width:12px;
-}
-.details .item label:nth-child(1) span{
-    border-radius: 50%;
-    background-color: red;
+/**订单过程*/
+.OrderProcess{
+    color:#a4a4a4;
+    background-color: #f6f6f6;
+    height:142px;
     width:100%;
-}*/
-.details .item label:nth-child(1){
-    width:107px;
-    margin-left:10px;
+    padding-right:70px;
+    padding-left:70px;
 }
-.details .item label:nth-child(2){
-    width:54px;
+.OrderProcess div{
+    padding-right:5px;
+    padding-left:5px;
 }
-.details .item label:nth-child(3){
-    width:171px;
-
-}
-.details .subitem{
-    padding-top:3px;
-    margin-left:5px;
-    border-left:1px #ccc solid;
-}
-.details .subitem label:nth-child(1){
-    width:54px;
-    margin-left:117px;
-}
-.details .subitem label:nth-child(2){
-    width:171px;
+.OrderProcess .eventComplete{
+    color:#FF4500;
 }
 
+/**订单过程end*/
 .CloseDetails{
     width:100%;
     display: block;

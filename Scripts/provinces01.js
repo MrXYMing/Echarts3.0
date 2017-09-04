@@ -1,26 +1,6 @@
-/*//全国总仓地图
-var myChart;
-//全省总仓地图
-//var myCityChart;
-//全国缩略图
-var $S.myChinaChart;
-//全国总仓坐标
-var $S.provinces;
-//全国总仓干线
-var $S.myProvincesTrunk;
-//全国城市坐标
-var citys;
-//全省干线
-var citysTrunk;
-//所选省份
-var selectedProvince;
-//值域最大值
-var dataRangeMax = 0;*/
 //命名空间
 var $S = {
-    /**
-     * 刷新计时器对象  IsOpen: 是否开启刷新；timeSlot：刷新间隔时间，1000 = 1秒;
-     */
+    /**刷新计时器对象  IsOpen: 是否开启刷新；timeSlot：刷新间隔时间，1000 = 1秒;*/
     setTimeObj: { IsOpen: true, setTime: null, setFun: "", timeSlot: 5000000 },
     /**时间计时器 */
     startTime: function () { },
@@ -86,17 +66,22 @@ var $S = {
     citysTrunk: null,
     /**全国缩略图 */
     myChinaChart: null,
-    /** 筛选条件数据 -- 中心仓库,省仓,运输类型,单据类型,品牌类型,商品编号,是否超时*/
+    /** 筛选条件数据*/
     FilterData: function (data) {
-        if (!data) {
-            return;
-        }
+        data = data || {};
+        /** 中心仓库*/
         this.CenterWarehouse = data.CenterWarehouse || [];
+        /** 省仓*/
         this.ProvinceWarehouse = data.ProvinceWarehouse || [];
+        /** 运输类型*/
         this.TransportType = data.TransportType || [];
+        /** 单据类型*/
         this.OrderType = data.OrderType || [];
+        /** 品牌类型*/
         this.BrandType = data.BrandType || [];
+        /** 商品编号*/
         this.Material = data.Material || "";
+        /** 是否超时*/
         this.TimeOut = data.TimeOut || 0;
     },
     /**中心仓库 色值 */
@@ -121,8 +106,8 @@ $(function () {
     //设置全国总仓option
     $S.SetOption("全国");
     setInterval("$S.startTime()", 500);
-    $S.setTimeObj.setFun = "$S.GetProvincesTrunk()";
     if ($S.setTimeObj.IsOpen) {
+        $S.setTimeObj.setFun = "$S.GetProvincesTrunk()";
         $S.setTimeObj.setTime = setInterval($S.setTimeObj.setFun, $S.setTimeObj.timeSlot);
     }
 
@@ -194,27 +179,30 @@ $S.GetDay = function (_day) {
         $S.legend.hide();
     }
 });*/
-$(".togglefilterbtn").click(function () {
+//控制查询界面显示/隐藏
+$(".togglefilter").click(function () {
     if ($(".filterdata").css("display") == "none") {
+        $(".filterdatabox").css("height", "441px");
         $(".filterdata").css("display", "block");
-    }else{
+        $(".filterdata").css("height", "412px");
+    } else {
+        $(".filterdatabox").css("height", "31px");
         $(".filterdata").css("display", "none");
+        $(".filterdata").css("height", "0px");
     }
 });
+//设置查询界面
 $S.SetFilterData = function (province) {
     var _province = province || "全国";
     $S.GetFilterData(_province, function (data) {
         var filterData = new $S.FilterData(data);
-        console.log(JSON.stringify(filterData));
-
         for (var i in filterData) {
             $S.SetFilterHtml(filterData[i], i);
         }
-
-
     });
 
 }
+//获取查询条件数据
 $S.GetFilterData = function () {
     var cache = {};
 
@@ -237,15 +225,15 @@ $S.GetFilterData = function () {
         }
     }
 }();
-
+//生成查询UI
 $S.SetFilterHtml = function (data, dom) {
     if (dom === "Material") {
         return;
     } else if (dom === "TimeOut") {
         if (data == 0) {
-            $(".TimeOut [name = timeout]:checkbox").attr("checked", true);
+            $("#TimeOut [name = 'timeout']:checkbox").attr("checked", true);
         } else {
-            $(".TimeOut [name = timeout][value=" + data + "]").attr("checked", true);
+            $("#TimeOut [name = 'timeout'][value=" + data + "]").attr("checked", true);
         }
     } else {
         var html = "<select class='selectpicker' multiple data-none-selected-text='暂无选择' data-live-search='true' data-select-all-text='全选' data-deselect-all-text='全不选' data-live-search-placeholder='Search' data-actions-box='true'>";
@@ -253,17 +241,37 @@ $S.SetFilterHtml = function (data, dom) {
             html += "<option>" + item + "</option>";
         });
         html += "</select>";
-        $("." + dom).html(html);
+        $("#" + dom).html(html);
 
         //更新内容刷新到相应的位置
-        $("." + dom).find("select").selectpicker('refresh');
+        $("#" + dom).find("select").selectpicker('refresh');
     }
 
 }
-$(".searchBtn").click(function () {
-    var data = $(".CenterWarehouse select").selectpicker("val");
-    alert(data);
+//查询按钮
+$(".box").on("click", ".searchBtn", function () {
+    $S.GetProvincesTrunk($S.GetSearchData());
 });
+//获取用户选择的查询条件
+$S.GetSearchData = function () {
+    var data = new $S.FilterData();
+    var selectDom = $(".filterdata select");
+    selectDom.each(function (i, item) {
+        var _id = $(item).parent().parent().attr("id");
+        data[_id] = $(item).selectpicker("val");
+    });
+    data.Material = $("#Material").find("input").val();
+    var timeout = 0;
+    $("#TimeOut input[name='timeout']:checked").each(function () {
+        timeout += Number($(this).val());
+    });
+    if (timeout > 2) {
+        timeout = 0;
+    }
+    data.TimeOut = timeout;
+    //alert(JSON.stringify(data));
+    return data;
+}
 //legend的change事件，重新渲染视图
 $(".box").on("click", "#legend li", function () {
     var animate = new $S.Animate();
@@ -366,7 +374,7 @@ $S.SetOption = function (_seriesName) {
     $S.myChart.on('geoselectchanged', function (params) {
         if (params.batch[0].name && params.batch[0].name !== "undefined") {
             $(".waybillList table tbody").html("<tr><td colspan='3'>获取运单清单中，请稍后...</td></tr>");
-            $(".details").html("获取清单详情中，请稍后...");
+            // $(".details").html("获取清单详情中，请稍后...");
             $(".legend").html("<option value='--'>--</option>");
             //清除刷新计时器
             clearInterval($S.setTimeObj.setTime);
@@ -396,18 +404,21 @@ $S.SetOption = function (_seriesName) {
         $S.provinces = result;
         //用户选择的干线
         $S.SeriesName = _seriesName;
+
+        //设置筛选条件
+        $S.SetFilterData("全国");
         //获取全国总仓干线
         $S.GetProvincesTrunk();
         //取消loading动画
         $S.myChart.hideLoading();
     }
     action.Fail = function (err) {
-        alert(err.responseJSON.Message);
+        alert("链接服务器失败，请刷新后重新获取全国仓库坐标");
     }
     action.PostAction();
 }
 //获取全国总仓干线函数，同时用于计数器刷新数据
-$S.GetProvincesTrunk = function () {
+$S.GetProvincesTrunk = function (data) {
     //清除订单信息框
     var animate = new $S.Animate();
     animate.ClearWaybillbox();
@@ -415,8 +426,9 @@ $S.GetProvincesTrunk = function () {
 
     $S.GetRecords();
 
+    data = data || new $S.FilterData();
     var action = new $S.Action();
-    action.ActionData = JSON.stringify({ param: new $S.FilterData() });
+    action.ActionData = JSON.stringify({ param: data });
     action.ActionUrl = "http://localhost:17463/service.asmx/GetContryMainTransport";
     action.Done = function (res) {
         //全国总仓干线
@@ -428,8 +440,6 @@ $S.GetProvincesTrunk = function () {
         }
         //设置左上角的下拉框选项
         // $S.SetLegend(trunkList);
-        //设置筛选条件
-        $S.SetFilterData("全国");
         //初始化设置option中的series
         $S.SetSeries($S.SeriesName);
 
@@ -441,14 +451,15 @@ $S.GetProvincesTrunk = function () {
 
 }
 
-$S.GetRecords = function () {
+$S.GetRecords = function (data) {
+    data = data || "全国";
     //清除订单信息框
     var animate = new $S.Animate();
     animate.ClearWaybillbox();
     animate.ClearDetailsbox();
 
     var action = new $S.Action();
-    action.ActionData = JSON.stringify({ province: "全国" });
+    action.ActionData = JSON.stringify({ province: data });
     action.ActionUrl = "http://localhost:17463/service.asmx/GetRecords";
     action.Done = function (res) {
         $S.SetRecords(res.d);
@@ -844,7 +855,7 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
             zlevel: 7,
             markPoint: {
                 data: [{
-                    symbol: "image://./Src/g.png",
+                    symbol: "image://./Src/images/home.png",
                     symbolSize: 25,
                     //symbolOffset: [2, 2],
                     name: item,
@@ -922,29 +933,31 @@ $S.SetSecondInit = function (_selectedProvince) {
     animate.ClearDetailsbox();
     //显示返回按钮
     $("#minor").css("display", "block");
-    $(".back").addClass("show");
+    $(".back").addClass("showback");
     //设置全国缩略图
     $S.SetChina(_selectedProvince);
     //设置城市地图
     $S.SetCityOption(_selectedProvince);
 
     //设置定时刷新器
-    $S.setTimeObj.setFun = "$S.GetProvinceTransport()";
     if ($S.setTimeObj.IsOpen) {
+        clearInterval($S.setTimeObj.setFun);
+        $S.setTimeObj.setFun = "$S.GetProvinceTransport()";
         $S.setTimeObj.setTime = setInterval($S.setTimeObj.setFun, $S.setTimeObj.timeSlot);
     }
     // $S.setTime = setInterval("$S.GetProvinceTransport()", 5000);
 }
 
 //获取市仓支线数据，并设置series和legend
-$S.GetProvinceTransport = function () {
+$S.GetProvinceTransport = function (data) {
+    data = data || new $S.FilterData();
     var animate = new $S.Animate();
     animate.ClearWaybillbox();
     animate.ClearDetailsbox();
     //根据用户选择省份获取全部市仓支线数据
     $S.citysTrunk = [];
     var action = new $S.Action();
-    action.ActionData = JSON.stringify({ province: $S.selectedProvince, param: new $S.FilterData() });
+    action.ActionData = JSON.stringify({ province: $S.selectedProvince, param: data });
     action.ActionUrl = "http://localhost:17463/service.asmx/GetProvinceTransport";
     action.Done = function (res) {
 
@@ -958,8 +971,6 @@ $S.GetProvinceTransport = function () {
             cityTrunkList.push($S.citysTrunk[x].name);
         }
         //$S.SetLegend(cityTrunkList);
-        //设置筛选条件
-        $S.SetFilterData($S.selectedProvince);
     }
     action.Fail = function (err) {
         alert(err.responseJSON.Message);
@@ -1049,12 +1060,20 @@ $S.SetCityOption = function (_selectedProvince) {
             for (var x in $S.citysTrunk) {
                 cityTrunkList.push($S.citysTrunk[x].name);
             }
-            //$S.SetLegend(cityTrunkList);
+
             //设置筛选条件
             $S.SetFilterData(_selectedProvince);
+            //$S.SetLegend(cityTrunkList);
             //注销全国省仓中左上角下拉框的点击事件，并重新绑定点击事件
             $S.selectedProvince = _selectedProvince;
-            $(".box").off("click", "#legend li");
+
+
+
+            $(".box").off("click", ".searchBtn");
+            $(".box").on("click", ".searchBtn", function () {
+                $S.GetProvinceTransport($S.GetSearchData());
+            });
+            /*$(".box").off("click", "#legend li");
             $(".box").on("click", "#legend li", function () {
                 var animate = new $S.Animate();
                 animate.ClearWaybillbox();
@@ -1064,7 +1083,7 @@ $S.SetCityOption = function (_selectedProvince) {
                 $S.legend.hide();
                 $(".legendbox .styled-select").html($S.SeriesName);
                 $S.SetCitySeries($S.selectedProvince, $S.SeriesName);
-            });
+            });*/
 
             $S.myChart.hideLoading();
 
@@ -1239,6 +1258,9 @@ $S.SetChina = function (_selectedProvince) {
             $S.citys = result;
 
             $S.SeriesName = "全省";
+
+            //设置筛选条件
+            $S.SetFilterData($S.selectedProvince);
             //获取市仓支线数据，并设置series和legend
             $S.GetProvinceTransport();
             $S.myChart.hideLoading();
@@ -1267,7 +1289,7 @@ $(".box").on("click", ".back", function () {
 
     //隐藏返回按钮
     $("#minor").css("display", "none");
-    $(".back").removeClass("show");
+    $(".back").removeClass("showback");
     //重新渲染全省总仓视图
     $S.SetOption("全国");
 
@@ -1275,11 +1297,14 @@ $(".box").on("click", ".back", function () {
     for (var x in $S.myProvincesTrunk) {
         trunkList.push($S.myProvincesTrunk[x].name);
     }
+
+    $(".box").off("click", ".searchBtn");
+    $(".box").on("click", ".searchBtn", function () {
+        $S.GetProvincesTrunk($S.GetSearchData());
+    });
     //$S.SetLegend(trunkList);
-    //设置筛选条件
-    $S.SetFilterData("全国");
     //重新绑定左上角下拉框事件
-    $(".box").off("click", "#legend li");
+    /*$(".box").off("click", "#legend li");
     $(".box").on("click", "#legend li", function () {
         var animate = new $S.Animate();
         animate.ClearWaybillbox();
@@ -1289,11 +1314,12 @@ $(".box").on("click", ".back", function () {
         $S.legend.hide();
         $(".legendbox .styled-select").html($S.SeriesName);
         $S.SetSeries($S.SeriesName);
-    });
+    });*/
 
 
-    $S.setTimeObj.setFun = "$S.GetProvincesTrunk()";
     if ($S.setTimeObj.IsOpen) {
+        clearInterval($S.setTimeObj.setFun);
+        $S.setTimeObj.setFun = "$S.GetProvincesTrunk()";
         $S.setTimeObj.setTime = setInterval($S.setTimeObj.setFun, $S.setTimeObj.timeSlot);
     }
     //$S.setTime = setInterval("$S.GetProvincesTrunk()", 5000);
@@ -1314,8 +1340,8 @@ $S.Animate.prototype = {
     },
     //显示订单清单
     ShowTbodybox: function (callback) {
-        $(".tbodybox").animate({ height: "130px" }, 1000);
-        $(".detailsbox").animate({ height: "230px", width: "350px" }, callback);
+        $(".tbodybox").animate({ height: "300px" }, 1000);
+        $(".detailsbox").animate({ height: "604px", width: "698px" }, callback);
     },
     //清除订单详情
     ClearDetailsbox: function () {
@@ -1334,8 +1360,8 @@ $S.Animate.prototype = {
         //$(".detailsbox .table").css('height')
         // $(".detailsbox").animate({ height: "314px" }, 1000);
         var _height = $(".details").height();
-        if (_height > 228) {
-            _height = 228;
+        if (_height > 604) {
+            _height = 604;
         }
         $(".detailsbox .table").animate({ height: _height + "px" }, 1000);
     },
@@ -1347,7 +1373,7 @@ $S.ShowWaybill = function (_name) {
     //获取起点和终点
     var _firstStation = names[0].Trim(),
         _Terminus = names[1].Trim();
-    var _title = "<span class='Highlight'>" + _firstStation + "</span> 至 " + "<span class='Highlight'>" + _Terminus + "</span>";
+    var _title = "<span class='Highlight'>" + _firstStation + "</span><span class='glyphicon glyphicon-option-horizontal'></span> " + "<span class='Highlight'>" + _Terminus + "</span>";
     $(".waybillList .waybilltitle .statetitle").html(_title);
     $(".waybillList .table .tbody").html("<div><span>获取运单清单中，请稍后...</span></div>");
     var animate = new $S.Animate();
@@ -1369,7 +1395,62 @@ $S.ShowWaybill = function (_name) {
                 result["message"] = "该线路暂无订单";
             }
 
+            var waybill = [];
+            var List = result.waybill;
+            for (var x in List) {
+                //UnixToDate(,true)
+                var _datetime = $S.UnixToDate(List[x].DeliveryDate.split("/Date(")[1].split(")/")[0], true);
+                var _date = _datetime.date;
+                var _time = _datetime.time;
+
+                var isNewdate = true;
+                for (var y in waybill) {
+                    if (waybill[y].date === _date) {
+                        isNewdate = false;
+                        waybill[y].subWaybill.push({ "type": List[x].type, "NO": List[x].NO, "count": List[x].count, "PlanHours": List[x].PlanHours, "UsedHours": List[x].UsedHours });
+                        break;
+                    }
+                }
+                if (isNewdate) {
+                    waybill.push({ "date": _date, "subWaybill": [{ "type": List[x].type, "NO": List[x].NO, "count": List[x].count, "PlanHours": List[x].PlanHours, "UsedHours": List[x].UsedHours }] });
+                }
+            }
+
             var html = "";
+            if (result.IsExist) {
+                for (var x in waybill) {
+                    html += "<div class=\"btnclick clearfloat\" onclick=\"$S.ShowDetails('" + waybill[x].subWaybill[0].NO + "')\">";
+                    html += "<label title='" + waybill[x].date + "'>" + waybill[x].date + "</label>";
+                    html += "<label><image src='Src/images/" + waybill[x].subWaybill[0].type + ".png'></span></label>";
+                    html += "<label title='" + waybill[x].subWaybill[0].NO + "'>" + waybill[x].subWaybill[0].NO + "</label>";
+                    html += "<label title='" + waybill[x].subWaybill[0].count + "'>" + waybill[x].subWaybill[0].count + "</label>";
+                    html += "<label title='" + waybill[x].subWaybill[0].PlanHoursNO + "'>" + waybill[x].subWaybill[0].PlanHours + "</label>";
+                    html += "<label title='" + waybill[x].subWaybill[0].UsedHours + "'>" + waybill[x].subWaybill[0].UsedHours + "</label>";
+                    html += "</div>";
+
+                    var length = waybill[x].subWaybill.length;
+                    if (length > 1) {
+                        for (var i = 1; i < length; i += 1) {
+                            html += "<div class='btnclick subitem clearfloat";
+
+                            if (waybill[x].subWaybill[i].UsedHours > waybill[x].subWaybill[i].PlanHours) {
+                                html += " timeOut";
+                            }
+                            html += "' onclick=\"$S.ShowDetails('" + waybill[x].subWaybill[0].NO + "')\">";
+                            html += "<label>&nbsp;</label>";
+                            html += "<label><image src='Src/images/" + waybill[x].subWaybill[i].type + ".png'></span></label>";
+                            html += "<label title='" + waybill[x].subWaybill[i].NO + "'>" + waybill[x].subWaybill[i].NO + "</label>";
+                            html += "<label title='" + waybill[x].subWaybill[i].count + "'>" + waybill[x].subWaybill[i].count + "</label>";
+                            html += "<label title='" + waybill[x].subWaybill[i].PlanHours + "'>" + waybill[x].subWaybill[i].PlanHours + "</label>";
+                            html += "<label title='" + waybill[x].subWaybill[i].UsedHours + "'>" + waybill[x].subWaybill[i].UsedHours + "</label>";
+                            html += "</div>";
+                        }
+                    }
+                }
+            } else {
+                html = "<div><span>" + result.message + "</span></div>";
+            }
+            /*var html = "";
             if (result.IsExist) {
                 var List = result.waybill;
                 //将订单清单相关数据嵌入html中
@@ -1383,11 +1464,10 @@ $S.ShowWaybill = function (_name) {
                 }
             } else {
                 html = "<div><span>" + result.message + "</span></div>";
-            }
+            }*/
             //显示html
             $('.waybillList .table .tbody').html(html);
             animate.ShowTbodybox();
-
         }
         action.Fail = function (err) {
             alert(err.responseJSON.Message);
@@ -1411,68 +1491,77 @@ $S.CloseWaybill = function () {
 }
 //显示运单详情 _WaybillNo：运单号
 $S.ShowDetails = function (_WaybillNo) {
-    $(".details").html("获取清单详情中，请稍后...");
+    // $(".details").html("获取清单详情中，请稍后...");
     var animate = new $S.Animate();
     animate.InitDetailsbox(function () {
         var action = new $S.Action();
         action.ActionData = JSON.stringify({ order: _WaybillNo });
         action.ActionUrl = "http://localhost:17463/service.asmx/GetTransportOrderInfor";
         action.Done = function (res) {
-            // console.log(res);
             var data = res.d;
-            var details = [];
-            //循环所有详情数据
-            for (var x in data) {
-                //UnixToDate(,true)
-                //将运单详情中的unix时间戳转化为正常时间
-                var _datetime = $S.UnixToDate(data[x].datetime.split("/Date(")[1].split(")/")[0], true);
+            //订单信息
+            var orderInfo = {
+                OrderNO: data.OrderNO || "",
+                ERPNO: data.ERPNO || ""
+            };
+            for (var i in orderInfo) {
+                $("." + i).text(orderInfo[i]);
+            }
+            //订单过程
+            var _OrderProcess = data.OrderProcess || [];
+            var OrderProcessHtml = "";
+            _OrderProcess.forEach(function (item, i) {
+                var _datetime = $S.UnixToDate(item.datetime.split("/Date(")[1].split(")/")[0], true);
+                OrderProcessHtml += "<div class='col-lg-2";
+                if (item.complete) {
+                    OrderProcessHtml += " eventComplete";
+                }
+                OrderProcessHtml += "'>";
+                OrderProcessHtml += "<div class='col-lg-12'>" + item.event + "</div>";
+                OrderProcessHtml += "<div class='col-lg-12'>" + _datetime.date + " " + _datetime.time + "</div>";
+                OrderProcessHtml += "</div>"
+            });
+            $(".OrderProcess").html(OrderProcessHtml);
+            //订单详情-》订单信息
+            var _OrderDetail = data.OrderDetail || {};
+            for (var j in _OrderDetail) {
+                //转化时间
+                if (j === "CreateDateTime") {
+                    var _datetime = $S.UnixToDate(_OrderDetail[j].split("/Date(")[1].split(")/")[0], true);
+                    _OrderDetail[j] = _datetime.date + " " + _datetime.time;
+                }
+                _OrderDetail[j] = _OrderDetail[j] || "--";
+                $("." + j).text(_OrderDetail[j]);
+            }
+            //订单详情-》商品信息
+            var _Commodities = data.Commodities || [];
+            var CommoditiesHtml = "";
+            _Commodities.forEach(function (item, i) {
+                CommoditiesHtml += "<span class='col-lg-1'>" + i + "</span>";
+                CommoditiesHtml += "<span class='col-lg-5'>" + item.Name + "</span>";
+                CommoditiesHtml += "<span class='col-lg-2'>" + item.Count + "</span>";
+                CommoditiesHtml += "<span class='col-lg-2'>" + item.Weight + "</span>";
+                CommoditiesHtml += "<span class='col-lg-2'>" + item.Volume + "</span>";
+            });
+            $(".CommoditiesList").html(CommoditiesHtml);
+            //收货人详情
+            var _ReciveInfo = data.ReciveInfo || {};
+            for (var k in _ReciveInfo) {
+                _ReciveInfo[k] = _ReciveInfo[k] || "--";
+                $("." + k).text(_ReciveInfo[k]);
+            }
+            //在途信息
+            var _TransportInfo = data.TransportInfo || [];
+            var TransportInfoHtml = "";
+            _TransportInfo.forEach(function (item, i) {
+                var _datetime = $S.UnixToDate(item.datetime.split("/Date(")[1].split(")/")[0], true);
                 var _date = _datetime.date;
                 var _time = _datetime.time;
-                //是否是新日期
-                var isNewdate = true;
-                //循环详情列表，将同一天的数据放进同一个详情数据行details的子详情行subDetails中
-                for (var y in details) {
-                    if (details[y].date === _date) {
-                        isNewdate = false;
-                        details[y].subDetails.push({ "address": data[x].address, "time": _time, "message": data[x].event });
-                        break;
-                    }
-                }
-                //如果是新日期，则在details详情列表中新增一个详情数据行
-                if (isNewdate) {
-                    details.push({ "date": _date, "days": $S.GetDay($S.NewDate(_date).getDay()), "subDetails": [{ "address": data[x].address, "time": _time, "message": data[x].event }] });
-                }
-            }
-            var result = {};
-            result["details"] = details;
-            result["IsExist"] = true;
-            if (result["details"].length <= 0) {
-                result.IsExist = false;
-                result["message"] = "该订单暂无订单详情";
-            }
-
-
-            var html = "";
-            if (result.IsExist) {
-                var _List = result.details;
-                //console.log(_List);
-                //循环详情数据，生成对应的html
-                for (var x in _List) {
-                    html += "<div class=\"item clearfloat\">";
-                    html += "<label title='" + _List[x].date + "'>" + _List[x].date + "/" + _List[x].days + "</label><label title='" + _List[x].subDetails[0].time + "'>" + _List[x].subDetails[0].time + "</label><label title='" + _List[x].subDetails[0].message + "'>[" + _List[x].subDetails[0].address + "]" + _List[x].subDetails[0].message + "</label><label><span></span></label></div>";
-                    //html += "<div class=\"subitem\">";
-                    var length = _List[x].subDetails.length;
-                    if (length > 1) {
-                        for (var i = 1; i < length; i += 1) {
-                            html += "<div class=\"subitem clearfloat\"><label title='" + _List[x].subDetails[i].time + "'>" + _List[x].subDetails[i].time + "</label><label title='" + _List[x].subDetails[i].message + "'>[" + _List[x].subDetails[i].address + "]" + _List[x].subDetails[i].message + "</label></div>";
-                        }
-                    }
-                }
-            } else {
-                html = result.message;
-            }
-
-            $('.details').html(html);
+                TransportInfoHtml += "<span class='col-lg-2'>" + _date + "</span>";
+                TransportInfoHtml += "<span class='col-lg-2'>" + _time + "</span>";
+                TransportInfoHtml += "<span class='col-lg-8'>" + item.event + "</span>";
+            });
+            $(".TransportInfoList").html(TransportInfoHtml);
             animate.ShowDetails();
         }
         action.Fail = function (err) {
@@ -1481,14 +1570,6 @@ $S.ShowDetails = function (_WaybillNo) {
         action.PostAction();
 
     });
-}
-/**解决某些浏览器new Date()不能直接设置参数的兼容性问题 */
-$S.NewDate = function (str) {
-    str = str.split('-');
-    var date = new Date();
-    date.setUTCFullYear(str[0], str[1] - 1, str[2]);
-    date.setUTCHours(0, 0, 0, 0);
-    return date;
 }
 //关闭运单详情
 $S.CloseDetails = function () {
@@ -1526,6 +1607,14 @@ $S.GetTrunk2 = function (_name) {
         }
     }
     return trunk;
+}
+/**解决某些浏览器new Date()不能直接设置参数的兼容性问题 */
+$S.NewDate = function (str) {
+    str = str.split('-');
+    var date = new Date();
+    date.setUTCFullYear(str[0], str[1] - 1, str[2]);
+    date.setUTCHours(0, 0, 0, 0);
+    return date;
 }
 //翻译unix时间戳
 $S.UnixToDate = function (unixTime, isFull) {
