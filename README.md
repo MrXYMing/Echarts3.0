@@ -1,97 +1,12 @@
- /** 订单详细*/
-    OrderInfo: function (data) {
-        data = data || {};
-        /** 订单信息*/
-        this.OrderInfo = {
-            /**订单编号 */
-            OrderNO: data.OrderNO || "",
-            /**ERP单号 */
-            ERPNO: data.ERPNO || "",
-            /**销售单号 */
-            SaleNO: data.SaleNO || ""
-        };
-        //var _OrderProcess = data.OrderProcess || {};
-        /** 订单过程*/
-        this.OrderProcess = {
-            /**时间 */
-            datetime: null,
-            /**地址 */
-            address: "",
-            /**事件 */
-            event: "",
-            /**是否完成 */
-            complete: null
-        };
-        var _OrderDetail = data.OrderDetail || {};
-        /** 订单详情*/
-        this.OrderDetail = {
-            /**发货仓库 */
-            SendWarehouse: _OrderDetail.SendWarehouse || "",
-            /**创建时间 */
-            CreateDateTime: _OrderDetail.CreateDateTime || null,
-            /**ERP订单号 */
-            ERPOrder: _OrderDetail.ERPOrder || "",
-            /**产品组 */
-            ProductGroup: _OrderDetail.ProductGroup || "",
-            /**客户名称 */
-            CustomName: _OrderDetail.CustomName || "",
-            /**送达方名称 */
-            DestName: _OrderDetail.DestName || null,
-            /**总重量 */
-            Weight: _OrderDetail.Weight || "",
-            /**总体积 */
-            Volume: _OrderDetail.Volume || "",
-            /**备注 */
-            note: _OrderDetail.note || ""
-        };
-        //var _Commodities = data.Commodities || {};
-        /** 商品信息*/
-        this.Commodities = {
-            /**商品名称 */
-            Name: "",
-            /**数量 */
-            Count: "",
-            /**重量 */
-            Weight: "",
-            /**体积 */
-            Volume: "",
-        };
-        var _ReciveInfo = data.ReciveInfo || {};
-        /** 收货人详细*/
-        this.ReciveInfo = {
-            /**送达省市区 */
-            SendArea: _OrderDetail.SendArea || "",
-            /**提货省市区 */
-            GetArea: _OrderDetail.GetArea || "",
-            /**送达地址 */
-            SendAddress: _OrderDetail.SendAddress || "",
-            /**提货地址 */
-            GetAddress: _OrderDetail.GetAddress || "",
-            /**收货联系人 */
-            ReciveMan: _OrderDetail.ReciveMan || "",
-            /**提货联系人 */
-            GetMan: _OrderDetail.GetMan || null,
-            /**收货人电话 */
-            ReciveNum: _OrderDetail.ReciveNum || "",
-            /**提货人电话 */
-            GetNum: _OrderDetail.GetNum || "",
-            /**服务级别 */
-            ServiceType: _OrderDetail.ServiceType || "",
-            /**运输方式 */
-            TransportType: _OrderDetail.TransportType || "",
-            /**签收标准 */
-            SignType: _OrderDetail.SignType || null
-        };
-        //var _TransportInfo = data.TransportInfo || {};
-        /** 在途详情*/
-        this.TransportInfo = {
-            /**时间 */
-            datetime: null,
-            /**地址 */
-            address: "",
-            /**事件 */
-            event: "",
-            /**是否完成 */
-            complete: null
-        };
-    },
+#### 基本信息
+
+该应用是提供给实施部的一个基于echarts3.0的物流展示看板应用，所以只保证了UI的初步正常实现，数据是后台模拟的，部分延伸功能并未实现；所以浏览时有不当之处请见谅。
+
+#### 使用说明
+
+- vs直接打开并运行`echartDemo`；
+- 浏览器直接打开`index.html`；
+- 点击`湖南省`可进入省级地图；
+- 点击地图上的`北京-上海`的运输线路，可打开物流列表；
+- 点击物流列表上的`运单号`可查看运单详情。
+- `干线运输`中的查询只实现了UI，之后移交实施部，故并未实现全部功能。
