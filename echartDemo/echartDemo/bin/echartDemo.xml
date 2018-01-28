@@ -1,0 +1,504 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+echartDemo
+</name>
+</assembly>
+<members>
+<member name="T:echartDemo.My.MyWebExtension">
+ <summary>
+ 用于定义 Web 项目的“My 命名空间”中可用属性的模块。
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:echartDemo.My.MyWebExtension.Computer">
+ <summary>
+ 返回有关主计算机的信息。
+ </summary>
+</member>
+<member name="P:echartDemo.My.MyWebExtension.User">
+ <summary>
+ 返回当前 Web 用户的信息。
+ </summary>
+</member>
+<member name="P:echartDemo.My.MyWebExtension.Request">
+ <summary>
+ 返回 Request 对象。
+ </summary>
+</member>
+<member name="P:echartDemo.My.MyWebExtension.Response">
+ <summary>
+ 返回 Response 对象。
+ </summary>
+</member>
+<member name="P:echartDemo.My.MyWebExtension.Log">
+ <summary>
+ 返回 Asp 日志对象。
+ </summary>
+</member>
+<member name="T:echartDemo.IMapControl">
+ <summary>
+ 地图接口
+ </summary>
+</member>
+<member name="M:echartDemo.IMapControl.GetContryWarehouse">
+ <summary>
+ 获取全国省市仓信息
+ </summary>
+ <returns>省市仓列表，包括名字，经度和纬度</returns>
+</member>
+<member name="M:echartDemo.IMapControl.GetProvinceWarehouse(System.String)">
+ <summary>
+ 获取省里面的仓库和销售点
+ </summary>
+ <param name="province">省</param>
+ <returns>该省所有的地图点</returns>
+</member>
+<member name="M:echartDemo.IMapControl.GetContryMainTransport(echartDemo.FilterData)">
+ <summary>
+ 获取全国干线运输信息
+ </summary>
+ <returns>运输线列表,实线，虚线</returns>
+</member>
+<member name="M:echartDemo.IMapControl.GetProvinceTransport(System.String,echartDemo.FilterData)">
+ <summary>
+ 获取全省支线运输信息
+ </summary>
+ <param name="province">省</param>
+ <returns>运输线列表，实线，虚线</returns>
+</member>
+<member name="M:echartDemo.IMapControl.GetTransportOrders(System.String,System.String)">
+ <summary>
+ 获取一条运输线的全部运输订单
+ </summary>
+ <param name="[from]">出发地</param>
+ <param name="[to]">目的地</param>
+ <returns>运输单列表</returns>
+</member>
+<member name="M:echartDemo.IMapControl.GetTransportOrderInfor(System.String)">
+ <summary>
+ 获取运输单的详细信息
+ </summary>
+ <param name="orderNO">运输单号</param>
+ <returns>时间节点信息</returns>
+</member>
+<member name="M:echartDemo.IMapControl.GetFilterData(System.String)">
+ <summary>
+ 获取筛选调整
+ </summary>
+ <param name="province">省，需要全国的时候，传入“全国”</param>
+ <returns></returns>
+</member>
+<member name="M:echartDemo.IMapControl.GetRecords(System.String)">
+ <summary>
+ 获取记录
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:echartDemo.MapControl.GetContryMainTransport(echartDemo.FilterData)">
+ <summary>
+ 获取全国干线运输信息
+ </summary>
+ <returns>运输线列表,实线，虚线</returns>
+</member>
+<member name="M:echartDemo.MapControl.GetContryWarehouse">
+ <summary>
+ 获取全国省市仓信息
+ </summary>
+ <returns>省市仓列表，包括名字，经度和纬度</returns>
+</member>
+<member name="M:echartDemo.MapControl.GetProvinceTransport(System.String,echartDemo.FilterData)">
+ <summary>
+ 获取全省支线运输信息
+ </summary>
+ <param name="province">省</param>
+ <returns>运输线列表，实线，虚线</returns>
+</member>
+<member name="M:echartDemo.MapControl.GetProvinceWarehouse(System.String)">
+ <summary>
+ 获取省里面的仓库和销售点
+ </summary>
+ <param name="province">省</param>
+ <returns>该省所有的地图点</returns>
+</member>
+<member name="M:echartDemo.MapControl.GetTransportOrderInfor(System.String)">
+ <summary>
+ 获取运输单的详细信息
+ </summary>
+ <param name="orderNO">运输单号</param>
+ <returns>时间节点信息</returns>
+</member>
+<member name="M:echartDemo.MapControl.GetTransportOrders(System.String,System.String)">
+ <summary>
+ 获取一条运输线的全部运输订单
+ </summary>
+ <param name="[from]">出发地</param>
+ <param name="[to]">目的地</param>
+ <returns>运输单列表</returns>
+</member>
+<member name="T:echartDemo.CommodityInfo">
+ <summary>
+ 商品信息
+ </summary>
+</member>
+<member name="F:echartDemo.CommodityInfo.Name">
+ <summary>
+ 商品名称
+ </summary>
+</member>
+<member name="F:echartDemo.CommodityInfo.Count">
+ <summary>
+ 数量
+ </summary>
+</member>
+<member name="F:echartDemo.CommodityInfo.Weight">
+ <summary>
+ 重量
+ </summary>
+</member>
+<member name="F:echartDemo.CommodityInfo.Volume">
+ <summary>
+ 体积
+ </summary>
+</member>
+<member name="T:echartDemo.ConsigneeInfo">
+ <summary>
+ 收货人详情
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.SendArea">
+ <summary>
+ 送达省市区
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.GetArea">
+ <summary>
+ 提货省市区
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.SendAddress">
+ <summary>
+ 送达地址
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.GetAddress">
+ <summary>
+ 提货地址
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.ReciveMan">
+ <summary>
+ 收货联系人
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.GetMan">
+ <summary>
+ 提货联系人
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.ReciveNum">
+ <summary>
+ 收货人电话
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.GetNum">
+ <summary>
+ 提货人电话
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.ServiceType">
+ <summary>
+ 服务级别
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.TransportType">
+ <summary>
+ 运输方式
+ </summary>
+</member>
+<member name="F:echartDemo.ConsigneeInfo.SignType">
+ <summary>
+ 签收标准
+ </summary>
+</member>
+<member name="T:echartDemo.FilterData">
+ <summary>
+ 筛选条件数据
+ 商品代码、时效为输入的类型，不由后面提供
+ </summary>
+</member>
+<member name="F:echartDemo.FilterData.CenterWarehouse">
+ <summary>
+ 中心仓库
+ </summary>
+</member>
+<member name="F:echartDemo.FilterData.ProvinceWarehouse">
+ <summary>
+ 省仓
+ </summary>
+</member>
+<member name="F:echartDemo.FilterData.TransportType">
+ <summary>
+ 运输类型
+ 运输类型如果固定为航运和陆运，这个属性忽略
+ </summary>
+</member>
+<member name="F:echartDemo.FilterData.OrderType">
+ <summary>
+ 单据类型
+ </summary>
+</member>
+<member name="F:echartDemo.FilterData.BrandType">
+ <summary>
+ 品牌类型
+ </summary>
+</member>
+<member name="F:echartDemo.FilterData.Material">
+ <summary>
+ 商品编号
+ </summary>
+</member>
+<member name="F:echartDemo.FilterData.TimeOut">
+ <summary>
+ 是否超时,0:全部、1：超时、2：未超时
+ </summary>
+</member>
+<member name="T:echartDemo.OrderDetail">
+ <summary>
+ 订单详细
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.SendWarehouse">
+ <summary>
+ 发货仓库
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.CreateDateTime">
+ <summary>
+ 创建时间
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.ERPOrder">
+ <summary>
+ ERP订单号
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.ProductGroup">
+ <summary>
+ 产品组
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.CustomName">
+ <summary>
+ 客户名称
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.DestName">
+ <summary>
+ 送达方名称
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.Weight">
+ <summary>
+ 总重量
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.Volume">
+ <summary>
+ 总体积
+ </summary>
+</member>
+<member name="F:echartDemo.OrderDetail.note">
+ <summary>
+ 备注
+ </summary>
+</member>
+<member name="T:echartDemo.OrderInfo">
+ <summary>
+ 订单详细
+ </summary>
+</member>
+<member name="F:echartDemo.OrderInfo.OrderNO">
+ <summary>
+ 订单编号
+ </summary>
+</member>
+<member name="F:echartDemo.OrderInfo.ERPNO">
+ <summary>
+ ERP单号
+ </summary>
+</member>
+<member name="F:echartDemo.OrderInfo.SaleNO">
+ <summary>
+ 销售单号
+ </summary>
+</member>
+<member name="F:echartDemo.OrderInfo.OrderProcess">
+ <summary>
+ 订单过程
+ </summary>
+</member>
+<member name="F:echartDemo.OrderInfo.OrderDetail">
+ <summary>
+ 订单详情
+ </summary>
+</member>
+<member name="F:echartDemo.OrderInfo.Commodities">
+ <summary>
+ 商品信息
+ </summary>
+</member>
+<member name="F:echartDemo.OrderInfo.ReciveInfo">
+ <summary>
+ 收货人详细
+ </summary>
+</member>
+<member name="F:echartDemo.OrderInfo.TransportInfo">
+ <summary>
+ 在途详情
+ </summary>
+</member>
+<member name="T:echartDemo.TimeLine">
+ <summary>
+ 时间线
+ </summary>
+</member>
+<member name="F:echartDemo.TimeLine.datetime">
+ <summary>
+ 时间
+ </summary>
+</member>
+<member name="F:echartDemo.TimeLine.address">
+ <summary>
+ 地址
+ </summary>
+</member>
+<member name="F:echartDemo.TimeLine.event">
+ <summary>
+ 事件
+ </summary>
+</member>
+<member name="F:echartDemo.TimeLine.complete">
+ <summary>
+ 是否完成
+ </summary>
+</member>
+<member name="F:echartDemo.TimeLine.name">
+ <summary>
+ 事件名称
+ </summary>
+</member>
+<member name="T:echartDemo.TransportOrder">
+ <summary>
+ 运单
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.warehouse">
+ <summary>
+ 仓库号
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.NO">
+ <summary>
+ 运单编号
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.mailNO">
+ <summary>
+ 快递单号
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.count">
+ <summary>
+ 数量
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.type">
+ <summary>
+ 运输方式
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.DeliveryDate">
+ <summary>
+ 发货时间
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.PlanHours">
+ <summary>
+ 计划用时（小时），承诺用时
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.UsedHours">
+ <summary>
+ 当前用时
+ </summary>
+</member>
+<member name="F:echartDemo.TransportOrder.MaterialDesc">
+ <summary>
+ 商品描述
+ </summary>
+</member>
+<member name="T:echartDemo.MapPoint">
+ <summary>
+ 仓库
+ </summary>
+</member>
+<member name="F:echartDemo.MapPoint.name">
+ <summary>
+ 仓库名称
+ </summary>
+</member>
+<member name="F:echartDemo.MapPoint.lot">
+ <summary>
+ 经度
+ </summary>
+</member>
+<member name="F:echartDemo.MapPoint.lat">
+ <summary>
+ 维度
+ </summary>
+</member>
+<member name="F:echartDemo.MapPoint.color">
+ <summary>
+ 中心仓指定的显示颜色
+ 颜色为空标识为：非中心仓库
+ </summary>
+</member>
+<member name="F:echartDemo.MapPoint.weather">
+ <summary>
+ 天气描述
+ </summary>
+</member>
+<member name="T:echartDemo.TransportLine">
+ <summary>
+ 运输线
+ </summary>
+</member>
+<member name="F:echartDemo.TransportLine.from">
+ <summary>
+ 起点
+ </summary>
+</member>
+<member name="F:echartDemo.TransportLine.to">
+ <summary>
+ 终点
+ </summary>
+</member>
+<member name="F:echartDemo.TransportLine.count">
+ <summary>
+ 数量
+ </summary>
+</member>
+<member name="T:echartDemo.TransportLineEx">
+ <summary>
+ 运输线
+ </summary>
+</member>
+<member name="F:echartDemo.TransportLineEx.name">
+ <summary>
+ 起点
+ </summary>
+</member>
+</members>
+</doc>

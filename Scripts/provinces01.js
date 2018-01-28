@@ -80,7 +80,7 @@ var $S = {
         /** 品牌类型*/
         this.BrandType = data.BrandType || [];
         /** 商品编号*/
-        this.Material = data.Material || "";
+        this.Material = data.Material || [];
         /** 是否超时*/
         this.TimeOut = data.TimeOut || 0;
     },
@@ -92,6 +92,50 @@ var $S = {
     SetRecords: function () { },
     /**终点订单数是否显示 */
     IsShow: true,
+    /**天气是否显示 */
+    IsShowWeather: true,
+    /**城市天气描述：天气icon图标 */
+    weather: {
+        "晴": "00",
+        "多云": "01",
+        "阴": "02",
+        "阵雨": "03",
+        "雷阵雨": "04",
+        "雷阵雨并伴有冰雹": "05",
+        "雨夹雪": "06",
+        "小雨": "07",
+        "中雨": "08",
+        "大雨": "09",
+        "暴雨": "10",
+        "大暴雨": "11",
+        "特大暴雨": "12",
+        "阵雪": "13",
+        "小雪": "14",
+        "中雪": "15",
+        "大雪": "16",
+        "暴雪": "17",
+        "雾": "18",
+        "冻雨": "19",
+        "沙尘暴": "20",
+        "小雨-中雨": "21",
+        "中雨-大雨": "22",
+        "大雨-暴雨": "23",
+        "暴雨-大暴雨": "24",
+        "大暴雨-特大暴雨": "25",
+        "小雪-中雪": "26",
+        "中雪-大雪": "27",
+        "大雪-暴雪": "28",
+        "浮尘": "29",
+        "扬沙": "30",
+        "强沙尘暴": "31",
+        "飑": "32",
+        "龙卷风": "33",
+        "弱高吹雪": "34",
+        "轻雾": "35",
+        "霾": "53",
+    },
+    /**城市：天气 */
+    weatherCitys: {},
 };
 $(function () {
     //响应浏览器窗口大小变化
@@ -110,7 +154,6 @@ $(function () {
         $S.setTimeObj.setFun = "$S.GetProvincesTrunk()";
         $S.setTimeObj.setTime = setInterval($S.setTimeObj.setFun, $S.setTimeObj.timeSlot);
     }
-
 });
 
 
@@ -182,13 +225,19 @@ $S.GetDay = function (_day) {
 //控制查询界面显示/隐藏
 $(".togglefilter").click(function () {
     if ($(".filterdata").css("display") == "none") {
-        $(".filterdatabox").css("height", "441px");
+        //$(".filterdatabox").css("height", "441px");
         $(".filterdata").css("display", "block");
-        $(".filterdata").css("height", "412px");
+        //$(".filterdata").css("height", "412px");
+        $(".filterdata").animate({ height: "412px" }, 1000);
+        $(".filterdatabox").animate({ height: "441px" }, 1000);
     } else {
-        $(".filterdatabox").css("height", "31px");
-        $(".filterdata").css("display", "none");
-        $(".filterdata").css("height", "0px");
+        //$(".filterdatabox").css("height", "31px");
+        //$(".filterdata").css("height", "0px");
+        $(".filterdata").animate({ height: "0px" }, 1000);
+        $(".filterdatabox").animate({ height: "31px" }, 1000, function () {
+            $(".filterdata").css("display", "none");
+        });
+
     }
 });
 //设置查询界面
@@ -227,16 +276,20 @@ $S.GetFilterData = function () {
 }();
 //生成查询UI
 $S.SetFilterHtml = function (data, dom) {
-    if (dom === "Material") {
-        return;
-    } else if (dom === "TimeOut") {
+    if (dom === "TimeOut") {
         if (data == 0) {
             $("#TimeOut [name = 'timeout']:checkbox").attr("checked", true);
         } else {
             $("#TimeOut [name = 'timeout'][value=" + data + "]").attr("checked", true);
         }
     } else {
-        var html = "<select class='selectpicker' multiple data-none-selected-text='暂无选择' data-live-search='true' data-select-all-text='全选' data-deselect-all-text='全不选' data-live-search-placeholder='Search' data-actions-box='true'>";
+        var data_multiple = $("#" + dom).data("multiple")
+        var _IsMultiple = typeof data_multiple == "undefined" ? true : data_multiple;
+        var html = "<select class='selectpicker show-tick' ";
+        if (_IsMultiple == true) {
+            html += "multiple";
+        }
+        html += " data-none-selected-text='暂无选择' title='暂无选择' data-live-search='true' data-select-all-text='全选' data-deselect-all-text='全不选' data-live-search-placeholder='Search' data-actions-box='true'>";
         data.forEach(function (item, i) {
             html += "<option>" + item + "</option>";
         });
@@ -260,7 +313,7 @@ $S.GetSearchData = function () {
         var _id = $(item).parent().parent().attr("id");
         data[_id] = $(item).selectpicker("val");
     });
-    data.Material = $("#Material").find("input").val();
+    //data.Material = $("#Material").find("input").val();
     var timeout = 0;
     $("#TimeOut input[name='timeout']:checked").each(function () {
         timeout += Number($(this).val());
@@ -399,6 +452,9 @@ $S.SetOption = function (_seriesName) {
             if (data[x].color !== "") {
                 $S.centralWarehouse[data[x].name] = data[x].color;
             }
+            if (data[x].weather !== "") {
+                $S.weatherCitys[data[x].name] = data[x].weather;
+            }
         }
         //全国总仓坐标
         $S.provinces = result;
@@ -482,10 +538,14 @@ $S.SetSeries = function (_seriesName) {
     //根据用户选择得到对应市仓干线
     var _provinces = $S.GetTrunk(_seriesName);
     //获取series -- $S.GetSeries（“用户选择的干线名称”，“对应的干线数据”，“全国省仓坐标”）；
+
     var series = $S.GetSeries(_seriesName, _provinces, $S.provinces);
+
+
     //重置option
     var _option = $S.myChart.getOption();
-    _option.series = series;
+
+    $S.myChart.clear();
     _option.legend = {
         show: false,
         orient: 'vertical',
@@ -515,7 +575,31 @@ $S.SetSeries = function (_seriesName) {
         };
     }*/
 
-    $S.myChart.clear();
+    var timeout = 0;
+    $("#TimeOut input[name='timeout']:checked").each(function () {
+        timeout += Number($(this).val());
+    });
+    if (timeout == 2) {
+        series = [{
+            //路线的阴影
+            name: _seriesName,
+            type: 'lines',
+            zlevel: 1,
+            //阴影
+            effect: {
+                show: false,
+            },
+            //路线
+            lineStyle: {
+                normal: {
+                    show:false,
+                }
+            },
+            data: []
+        }];
+    }
+
+    _option.series = series;
     $S.myChart.setOption(_option, true);
 }
 //转化数据，设置series，公用  (干线名称，干线数据，全国省仓)
@@ -523,8 +607,8 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
     //实线数据
     var lineData = [];
     var lineDatas = [];
-
-    var centralLineData = { _seriesName: [] };
+    //{fromName:[[{name:fromName},{name:toName,value:count}],...]}
+    var centralLineData = { };
     //虚线数据
     var dotLineData = [];
     var dotLineDatas = [];
@@ -550,7 +634,18 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
                 centralLineData[_solidfrom] = centralLineData[_solidfrom] ? centralLineData[_solidfrom] : [];
                 centralLineData[_solidfrom].push([{ name: _solidfrom }, { name: _solidto, value: _count }]);
             } else {
-                lineData.push([{ name: _solidfrom }, { name: _solidto, value: _count }]);
+                var IsNewLine = true;
+                for (var index in lineDatas) {
+                    if (lineDatas[index][0] == _solidfrom) {
+                        lineDatas[index][1].push([{ name: _solidfrom }, { name: _solidto, value: _count }]);
+                        IsNewLine = false;
+                        break;
+                    }
+                }
+                if (IsNewLine) {
+                    lineDatas[lineDatas.length] = [_solidfrom, [[{ name: _solidfrom }, { name: _solidto, value: _count }]]];
+                }
+                // lineData.push([{ name: _solidfrom }, { name: _solidto, value: _count }]);
             }
 
             if (desValues[_solidto]) {
@@ -573,7 +668,8 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
             dotLineData.push([{ name: data[x].dot[z].from }, { name: data[x].dot[z].to }]);
         }
     }
-    lineDatas = [[_seriesName, lineData]];
+
+    //lineDatas = [[_seriesName, lineData]];
     dotLineDatas = [['虚线', dotLineData]];
     //全国省仓坐标
     var geoCoordMap = _geoCoordMap;
@@ -611,16 +707,17 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
         //series相关配置可查询api 【http://echarts.baidu.com/option.html#series】
         series.push({
             //路线的阴影
-            name: _seriesName,
+            name: i,
             type: 'lines',
-            zlevel: 11,
+            zlevel: 1,
             //阴影
             effect: {
-                show: true,
+                show: false,
                 period: 6,
                 trailLength: 0.7,
                 color: '#fff',
-                symbolSize: 3
+                symbolSize: 3,
+                animation: false
             },
             //路线
             lineStyle: {
@@ -634,9 +731,9 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
         },
             {
                 //路线以及路线动画
-                name: _seriesName,
+                name: i,
                 type: 'lines',
-                zlevel: 12,
+                zlevel: 2,
                 symbol: ['none', 'arrow'],
                 symbolSize: 10,
                 //动画
@@ -661,10 +758,11 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
 
             {
                 //终点标注
-                name: _seriesName,
-                type: 'effectScatter',
+                name: "weather",
+                // type: 'effectScatter',
+                type: 'scatter',
                 coordinateSystem: 'geo',
-                zlevel: 12,
+                zlevel: 2,
                 rippleEffect: {
                     brushType: 'stroke'
                 },
@@ -701,16 +799,25 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
                         }
                     }
                 },
-                symbolSize: function (val) {
+                symbolSize: 1,
+                /*symbolSize: function (val) {
                     return 10;
-                },
+                },*/
                 itemStyle: {
                     normal: {
                         color: "#fff",
                     }
                 },
                 data: centralLineData[i].map(function (dataItem) {
+                    var _imgurl = "",
+                        _symbolSize = 1;;
+                    if ($S.IsShowWeather) {
+                        _imgurl = "image://./Src/images/" + $S.weather[$S.weatherCitys[dataItem[1].name]] + ".png";
+                        _symbolSize = 30;
+                    }
                     return {
+                        symbol: _imgurl,
+                        symbolSize: _symbolSize,
                         name: dataItem[1].name,
                         value: geoCoordMap[dataItem[1].name].concat([desValues[dataItem[1].name]]),
                     };
@@ -735,7 +842,7 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
         //series相关配置可查询api 【http://echarts.baidu.com/option.html#series】
         series.push({
             //路线的阴影
-            name: _seriesName,
+            name: item[0],
             type: 'lines',
             zlevel: 1,
             //阴影
@@ -744,7 +851,8 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
                 period: 6,
                 trailLength: 0.7,
                 color: '#fff',
-                symbolSize: 3
+                symbolSize: 3,
+                animation: false
             },
             //路线
             lineStyle: {
@@ -758,7 +866,7 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
         },
             {
                 //路线以及路线动画
-                name: _seriesName,
+                name: item[0],
                 type: 'lines',
                 zlevel: 2,
                 symbol: ['none', 'arrow'],
@@ -790,8 +898,9 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
 
             {
                 //终点标注
-                name: _seriesName,
-                type: 'effectScatter',
+                name: "weather",
+                // type: 'effectScatter',
+                type: 'scatter',
                 coordinateSystem: 'geo',
                 zlevel: 2,
                 rippleEffect: {
@@ -829,16 +938,25 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
                         }
                     }
                 },
-                symbolSize: function (val) {
+                symbolSize: 1,
+                /*symbolSize: function (val) {
                     return 10;
-                },
+                },*/
                 itemStyle: {
                     normal: {
-                        color: "#fff"
+                        color: "#fff",
                     }
                 },
                 data: item[1].map(function (dataItem) {
+                    var _imgurl = "",
+                        _symbolSize = 1;
+                    if ($S.IsShowWeather) {
+                        _imgurl = "image://./Src/images/" + $S.weather[$S.weatherCitys[dataItem[1].name]] + ".png";
+                        _symbolSize = 30
+                    }
                     return {
+                        symbol: _imgurl,
+                        symbolSize: _symbolSize,
                         name: dataItem[1].name,
                         value: geoCoordMap[dataItem[1].name].concat([desValues[dataItem[1].name]]),
                     };
@@ -849,14 +967,15 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
     //发出仓库Home图标
     formCitys.forEach(function (item) {
         series.push({
-            name: "Weather",
+            name: "Warehouse",
             type: 'scatter',
             coordinateSystem: 'geo',
-            zlevel: 7,
+            zlevel: 3,
             markPoint: {
                 data: [{
                     symbol: "image://./Src/images/home.png",
                     symbolSize: 25,
+                    symbolOffset: ['-70%', 0],
                     //symbolOffset: [2, 2],
                     name: item,
                     coord: geoCoordMap[item],
@@ -904,6 +1023,34 @@ $S.GetSeries = function (_seriesName, data, _geoCoordMap) {
 
     return series
 }
+//控制城市的天气是否显示
+$(".box").on("click", ".showWeather", function () {
+    var _IsShowWeather = !$S.IsShowWeather;
+    $S.IsShowWeather = _IsShowWeather;
+    var _text = "隐藏天气";
+    var _option = $S.myChart.getOption();
+    _series = _option.series;
+    _series.forEach(function (item, i) {
+        if (item.name === "weather") {
+            _series[i].data.forEach(function (ele, j) {
+                if (_IsShowWeather) {
+                    _series[i].data[j].symbol = "image://./Src/images/" + $S.weather[$S.weatherCitys[_series[i].data[j].name]] + ".png";
+                    _series[i].data[j].symbolSize = 30;
+                } else {
+                    _series[i].data[j].symbol = "";
+                    _series[i].data[j].symbolSize = 1;
+                    // _series[i].itemStyle.normal.opacity = 1;
+                    _text = "显示天气";
+                }
+            });
+
+        }
+    });
+    _option.series = _series;
+    $S.myChart.setOption(_option);
+
+    $(this).text(_text);
+});
 
 //控制终点的订单数是否显示
 $(".toolbox").on("click", ".showLabel", function () {
@@ -912,16 +1059,16 @@ $(".toolbox").on("click", ".showLabel", function () {
     var _option = $S.myChart.getOption();
     _series = _option.series;
     _series.forEach(function (item, i) {
-        if (item.type === "effectScatter") {
+        if (item.name === "weather") {
             _series[i].label.normal.show = _IsShow;
         }
     });
     _option.series = _series;
     $S.myChart.setOption(_option);
     if (_IsShow) {
-        $(this).text("隐藏");
+        $(this).text("隐藏数量");
     } else {
-        $(this).text("显示");
+        $(this).text("显示数量");
     }
 });
 
@@ -931,9 +1078,21 @@ $S.SetSecondInit = function (_selectedProvince) {
     var animate = new $S.Animate();
     animate.ClearWaybillbox();
     animate.ClearDetailsbox();
+
     //显示返回按钮
     $("#minor").css("display", "block");
     $(".back").addClass("showback");
+
+    //隐藏查询条件
+    if ($(".filterdata").css("display") == "block") {
+        /*$(".filterdatabox").css("height", "31px");
+        $(".filterdata").css("display", "none");
+        $(".filterdata").css("height", "0px");*/
+        $(".filterdata").animate({ height: "0px" }, 1000);
+        $(".filterdatabox").animate({ height: "31px" }, 1000, function () {
+            $(".filterdata").css("display", "none");
+        });
+    }
     //设置全国缩略图
     $S.SetChina(_selectedProvince);
     //设置城市地图
@@ -1330,12 +1489,14 @@ $S.Animate = function () { };
 $S.Animate.prototype = {
     //清除订单清单
     ClearWaybillbox: function () {
-        $(".waybillList").hide(1000);
+        //$(".waybillList").hide(1000);
+        $(".waybillList").animate({ right: "-634px" }, 1000);
         $(".tbodybox").animate({ height: "0" }, 1000);
     },
     //初始化订单清单
     InitWaybillbox: function (callback) {
-        $(".waybillList").show(1000);
+        //$(".waybillList").show(1000);
+        $(".waybillList").animate({ right: "0" }, 1000);
         $(".tbodybox").animate({ height: "16px" }, callback);
     },
     //显示订单清单
@@ -1345,26 +1506,54 @@ $S.Animate.prototype = {
     },
     //清除订单详情
     ClearDetailsbox: function () {
+        $(".detailsbox").animate({ left: "-698px" }, 1000);
+        var _height = $(".details").height();
+        if (_height > 604) {
+            _height = 604;
+        }
+        _height = -_height;
+        // $(".detailsbox .table").animate({ top: _height + "px" }, 1000);
+    },
+    //初始化订单详情
+    InitDetailsbox: function (callback) {
+        var boxleft = $(".detailsbox").css("left");
+        if (boxleft === "0px") {
+            var _height = $(".details").height();
+            if (_height > 604) {
+                _height = 604;
+            }
+            _height = -_height;
+            $(".detailsbox .table").animate({ top: _height + "px" }, 500, callback);
+        } else {
+            callback && callback();
+            $(".detailsbox").animate({ left: "0" }, 1000);
+            //callback && callback();
+        }
+
+    },
+    //显示订单详情
+    ShowDetails: function () {
+        $(".detailsbox .table").animate({ top: "0px" }, 1000);
+    },
+    /*//清除订单详情
+    ClearDetailsbox: function () {
         $(".detailsbox").animate({ height: "0", width: "0" }, 1000);
         $(".detailsbox").hide(1000);
         $(".detailsbox .table").animate({ height: "0" }, 1000);
     },
     //初始化订单详情
     InitDetailsbox: function (callback) {
-        //  $(".detailsbox").animate({ height: "314px" });
         $(".detailsbox").show();
         $(".detailsbox .table").animate({ height: "16px" }, 1000, callback);
     },
     //显示订单详情
     ShowDetails: function () {
-        //$(".detailsbox .table").css('height')
-        // $(".detailsbox").animate({ height: "314px" }, 1000);
         var _height = $(".details").height();
         if (_height > 604) {
             _height = 604;
         }
         $(".detailsbox .table").animate({ height: _height + "px" }, 1000);
-    },
+    },*/
 }
 //显示运单清单 _name用户选择的线路
 $S.ShowWaybill = function (_name) {
@@ -1373,7 +1562,7 @@ $S.ShowWaybill = function (_name) {
     //获取起点和终点
     var _firstStation = names[0].Trim(),
         _Terminus = names[1].Trim();
-    var _title = "<span class='Highlight'>" + _firstStation + "</span><span class='glyphicon glyphicon-option-horizontal'></span> " + "<span class='Highlight'>" + _Terminus + "</span>";
+    var _title = "<span class='Highlight'>" + _firstStation + "</span><span class='leftdot'>●</span><span class='dot centerdot'>●</span><span class='rightdot'>●</span> " + "<span class='Highlight'>" + _Terminus + "</span>";
     $(".waybillList .waybilltitle .statetitle").html(_title);
     $(".waybillList .table .tbody").html("<div><span>获取运单清单中，请稍后...</span></div>");
     var animate = new $S.Animate();
@@ -1436,7 +1625,7 @@ $S.ShowWaybill = function (_name) {
                             if (waybill[x].subWaybill[i].UsedHours > waybill[x].subWaybill[i].PlanHours) {
                                 html += " timeOut";
                             }
-                            html += "' onclick=\"$S.ShowDetails('" + waybill[x].subWaybill[0].NO + "')\">";
+                            html += "' onclick=\"$S.ShowDetails('" + waybill[x].subWaybill[i].NO + "')\">";
                             html += "<label>&nbsp;</label>";
                             html += "<label><image src='Src/images/" + waybill[x].subWaybill[i].type + ".png'></span></label>";
                             html += "<label title='" + waybill[x].subWaybill[i].NO + "'>" + waybill[x].subWaybill[i].NO + "</label>";
@@ -1450,21 +1639,6 @@ $S.ShowWaybill = function (_name) {
             } else {
                 html = "<div><span>" + result.message + "</span></div>";
             }
-            /*var html = "";
-            if (result.IsExist) {
-                var List = result.waybill;
-                //将订单清单相关数据嵌入html中
-                for (var x in List) {
-                    var _date = $S.UnixToDate(List[x].DeliveryDate.split("/Date(")[1].split(")/")[0], true).date;
-                    html += "<div class='btnclick clearfloat";
-                    if (List[x].UsedHours > List[x].PlanHours) {
-                        html += " timeOut";
-                    }
-                    html += "' onclick=\"$S.ShowDetails('" + List[x].NO + "')\"><label>" + List[x].type + "</label><label title='" + _date + "'>" + _date + "</label><label title='" + List[x].mailNO + "'>" + List[x].mailNO + "</label><label title='" + List[x].count + "'>" + List[x].count + "</label><label title='" + List[x].PlanHours + "'>" + List[x].PlanHours + "</label><label title='" + List[x].UsedHours + "'>" + List[x].UsedHours + "</label><label title='" + List[x].MaterialDesc + "'>" + List[x].MaterialDesc + "</label></div>";
-                }
-            } else {
-                html = "<div><span>" + result.message + "</span></div>";
-            }*/
             //显示html
             $('.waybillList .table .tbody').html(html);
             animate.ShowTbodybox();
@@ -1509,19 +1683,46 @@ $S.ShowDetails = function (_WaybillNo) {
             }
             //订单过程
             var _OrderProcess = data.OrderProcess || [];
-            var OrderProcessHtml = "";
+            var prolength = _OrderProcess.length - 1;
+            var process = [];
+            var processdot = "<div class='dot clearfloat'>";
+            processdot += "<span>●</span>";
+            processdot += "<span>●</span>";
+            processdot += "<span>●</span>";
+            processdot += "</div>";
+
             _OrderProcess.forEach(function (item, i) {
-                var _datetime = $S.UnixToDate(item.datetime.split("/Date(")[1].split(")/")[0], true);
-                OrderProcessHtml += "<div class='col-lg-2";
-                if (item.complete) {
-                    OrderProcessHtml += " eventComplete";
+                var _process = "";
+                var _datetime = item.datetime.split("/Date(")[1].split(")/")[0];
+                if (_datetime === "-62135596800000") {
+                    _datetime = { "date": "", "time": "" };
+                } else {
+                    _datetime = $S.UnixToDate(_datetime, true);
                 }
-                OrderProcessHtml += "'>";
-                OrderProcessHtml += "<div class='col-lg-12'>" + item.event + "</div>";
-                OrderProcessHtml += "<div class='col-lg-12'>" + _datetime.date + " " + _datetime.time + "</div>";
-                OrderProcessHtml += "</div>"
+                //var _datetime = $S.UnixToDate(item.datetime.split("/Date(")[1].split(")/")[0], true);
+                _process += "<div class='process clearfloat";
+                if (item.complete) {
+                    _process += " complete ";
+                }
+                _process += "'>";
+                _process += "  <span class='col-lg-12'>";
+                _process += "      <img src='Src/images/" + item.name;
+                if (item.complete) {
+                    _process += "2";
+                }
+                _process += ".png'  onerror=\"javascript:this.src='Src/images/jieshou.png';\" />";
+                _process += "  </span>";
+                _process += "  <span class='col-lg-12'>" + item.event + "</span>";
+                _process += "  <span class='col-lg-12'>" + _datetime.date + "</span>";
+                _process += "  <span class='col-lg-12'>" + _datetime.time + "</span>";
+                _process += "</div>"
+                process.push(_process);
+                if (i < prolength) {
+                    process.push(processdot);
+                }
             });
-            $(".OrderProcess").html(OrderProcessHtml);
+
+            $(".OrderProcess").html(process.join(""));
             //订单详情-》订单信息
             var _OrderDetail = data.OrderDetail || {};
             for (var j in _OrderDetail) {
@@ -1537,11 +1738,10 @@ $S.ShowDetails = function (_WaybillNo) {
             var _Commodities = data.Commodities || [];
             var CommoditiesHtml = "";
             _Commodities.forEach(function (item, i) {
-                CommoditiesHtml += "<span class='col-lg-1'>" + i + "</span>";
-                CommoditiesHtml += "<span class='col-lg-5'>" + item.Name + "</span>";
-                CommoditiesHtml += "<span class='col-lg-2'>" + item.Count + "</span>";
+                CommoditiesHtml += "<span class='col-lg-2'>" + i + "</span>";
+                CommoditiesHtml += "<span class='col-lg-6'>" + item.Name + "</span>";
                 CommoditiesHtml += "<span class='col-lg-2'>" + item.Weight + "</span>";
-                CommoditiesHtml += "<span class='col-lg-2'>" + item.Volume + "</span>";
+                CommoditiesHtml += "<span class='col-lg-2'>" + item.Count + "</span>";
             });
             $(".CommoditiesList").html(CommoditiesHtml);
             //收货人详情
@@ -1551,17 +1751,55 @@ $S.ShowDetails = function (_WaybillNo) {
                 $("." + k).text(_ReciveInfo[k]);
             }
             //在途信息
-            var _TransportInfo = data.TransportInfo || [];
-            var TransportInfoHtml = "";
-            _TransportInfo.forEach(function (item, i) {
-                var _datetime = $S.UnixToDate(item.datetime.split("/Date(")[1].split(")/")[0], true);
+            var List = data.TransportInfo || [];
+            var _TransportInfo = [];
+            for (var x in List) {
+                var _datetime = $S.UnixToDate(List[x].datetime.split("/Date(")[1].split(")/")[0], true);
                 var _date = _datetime.date;
                 var _time = _datetime.time;
-                TransportInfoHtml += "<span class='col-lg-2'>" + _date + "</span>";
-                TransportInfoHtml += "<span class='col-lg-2'>" + _time + "</span>";
-                TransportInfoHtml += "<span class='col-lg-8'>" + item.event + "</span>";
-            });
+
+                var isNewdate = true;
+                for (var y in _TransportInfo) {
+                    if (_TransportInfo[y].date === _date) {
+                        isNewdate = false;
+                        _TransportInfo[y].subItem.push({ "time": _time, "event": List[x].event });
+                        break;
+                    }
+                }
+                if (isNewdate) {
+                    _TransportInfo.push({ "date": _date, "subItem": [{ "time": _time, "event": List[x].event }] });
+                }
+            }
+            var TransportInfoHtml = "";
+            if (_TransportInfo.length > 0) {
+                for (var x in _TransportInfo) {
+                    TransportInfoHtml += "<div class=\"item clearfloat\">";
+                    TransportInfoHtml += "<label title='" + _TransportInfo[x].date + "'>&nbsp;&nbsp;" + _TransportInfo[x].date + "</label><span>" + _TransportInfo[x].subItem[0].time + "</span><span clas='event'>" + _TransportInfo[x].subItem[0].event + "</span><label><span></span></label></div>";
+                    var length = _TransportInfo[x].subItem.length;
+                    if (length > 1) {
+                        for (var i = 1; i < length; i += 1) {
+                            TransportInfoHtml += "<div class=\"subitem clearfloat\"><span>" + _TransportInfo[x].subItem[i].time + "</span><span clas='event'>" + _TransportInfo[x].subItem[i].event + "</span></div>";
+
+                        }
+
+                    }
+                }
+            } else {
+                TransportInfoHtml = "<span class='col-lg-12'>暂无物流信息</span>";
+            }
+
             $(".TransportInfoList").html(TransportInfoHtml);
+            /* var _TransportInfo = data.TransportInfo || [];
+             var TransportInfoHtml = "";
+             _TransportInfo.forEach(function (item, i) {
+                 var _datetime = $S.UnixToDate(item.datetime.split("/Date(")[1].split(")/")[0], true);
+                 var _date = _datetime.date;
+                 var _time = _datetime.time;
+                 TransportInfoHtml += "<span class='col-lg-2'>" + _date + "</span>";
+                 TransportInfoHtml += "<span class='col-lg-2'>" + _time + "</span>";
+                 TransportInfoHtml += "<span class='col-lg-8'>" + item.event + "</span>";
+             });
+             $(".TransportInfoList").html(TransportInfoHtml);*/
             animate.ShowDetails();
         }
         action.Fail = function (err) {
@@ -1571,6 +1809,15 @@ $S.ShowDetails = function (_WaybillNo) {
 
     });
 }
+$(".box").on("click", ".order .nav-tabs li", function () {
+    var img = $(this).find("img");
+    if (img.attr("src").indexOf("2.png") == -1) {
+        img.attr("src", img.attr("src").replace(".png", "2.png"));
+        var ontherimgurl = $(this).siblings().find("img");
+        ontherimgurl.attr("src", ontherimgurl.attr("src").replace("2.png", ".png"));
+    }
+
+});
 //关闭运单详情
 $S.CloseDetails = function () {
     var animate = new $S.Animate();

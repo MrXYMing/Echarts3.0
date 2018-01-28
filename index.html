@@ -24,7 +24,7 @@
         <div class="showtime"></div>
 
         <div class="filterdatabox">
-            <div class="filterdata mCustomScrollbar" data-mcs-theme="minimal">
+            <div class="filterdata">
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label for="basic" class="col-lg-3 control-label">中心仓库</label>
@@ -48,9 +48,9 @@
                     </div>
                     <div class="form-group">
                         <label for="basic" class="col-lg-3 control-label">商品代码</label>
-                        <div class="col-lg-9 " id="Material">
-                            <input type="text" class="form-control">
-                        </div>
+                        <div class="col-lg-9 " id="Material"></div>
+                        <!--需要单选时，给该id 同时赋予一个data-multiple="false"的属性-->
+                        <!--<div class="col-lg-9 " id="Material" data-multiple="false"></div>-->
                     </div>
                     <div class="form-group">
                         <label for="basic" class="col-lg-3 control-label TimeOut">时效</label>
@@ -63,8 +63,8 @@
                          </label>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <span class="btn btn-primary btn-sm searchBtn col-lg-2 col-lg-offset-9">查询</span>
+                    <div class="form-group text-center">
+                        <span class="btn btn-primary btn-sm searchBtn">查询</span>
                     </div>
                 </form>
             </div>
@@ -104,8 +104,9 @@
         </div>
 
         <div class="toolbox">
-            <span class="label label-primary showLabel">隐藏</span>
-            <span class="label label-primary back">返回</span>
+            <span class="btn btn-primary btn-sm back">返回</span>
+            <span class="btn btn-primary btn-sm showLabel">隐藏数量</span>
+            <span class="btn btn-primary btn-sm showWeather">隐藏天气</span>
             <!--<ul>
                 <li class="showLabel">隐藏</li>
                 <li class="back">返回</li>
@@ -113,7 +114,7 @@
         </div>
 
         <div class="detailsbox">
-            <div class="table mCustomScrollbar" data-mcs-theme="minimal">
+            <div class="table">
                 <div class="details ">
                     <div class="OrderInfo clearfloat">
                         <label class="col-lg-2">订单编号 :</label>
@@ -122,95 +123,59 @@
                         <span class="col-lg-3 ERPNO">--</span>
                         <span class="col-lg-2"></span>
                     </div>
-                    <div class="clearfloat OrderProcess"></div>
-                    <div class="">
+                    <div class="clearfloat OrderProcess text-center"></div>
+                    <div class="order">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#OrderDetailBox" aria-controls="OrderDetailBox" role="tab" data-toggle="tab">订单详情</a></li>
-                            <li role="presentation"><a href="#ReciveInfo" aria-controls="ReciveInfo" role="tab" data-toggle="tab">收货人信息</a></li>
-                            <li role="presentation"><a href="#TransportInfo" aria-controls="TransportInfo" role="tab" data-toggle="tab">在途详情</a></li>
+                            <li role="presentation" class="active"><a href="#OrderDetailBox" aria-controls="OrderDetailBox" role="tab" data-toggle="tab"><img alt="订单详情" src="Src/images/dingdan2.png" />订单详情</a></li>
+                            <li role="presentation"><a href="#TransportInfo" aria-controls="TransportInfo" role="tab" data-toggle="tab"><img alt="物流信息" src="Src/images/wuliu.png" /> 物流信息</a></li>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="OrderDetailBox">
-                                <div class="" class="OrderDetail">
-                                    <h5 class="text-primary">订单信息</h5>
-                                    <div class="clearfloat">
-                                        <label class="col-lg-2">发货库房</label>
+                                <div class="ReciveInfo clearfloat">
+                                    <div class="ordertitle">收货信息</div>
+                                    <div class="orderinfo clearfloat">
+                                        <span class="col-lg-2 ReciveMan">--</span>
+                                        <span class="col-lg-10 ReciveNum">--</span>
+                                        <span class="col-lg-12 SendAddress">--</span>
+                                    </div>
+                                </div>
+                                <div class="OrderDetail clearfloat">
+                                    <div class="ordertitle">订单信息</div>
+                                    <div class="orderinfo clearfloat">
+                                        <span class="col-lg-2">发货库房</span>
                                         <span class="col-lg-4 SendWarehouse">--</span>
-                                        <label class="col-lg-2">创单时间</label>
+                                        <span class="col-lg-2">预计达到？</span>
                                         <span class="col-lg-4 CreateDateTime">--</span>
                                         <div class="clearfix visible-lg-block"></div>
-                                        <label class="col-lg-2">ERP订单号</label>
-                                        <span class="col-lg-4 ERPOrder">--</span>
-                                        <label class="col-lg-2">产品组</label>
-                                        <span class="col-lg-4 ProductGroup">--</span>
-                                        <div class="clearfix visible-lg-block"></div>
-                                        <label class="col-lg-2">客户名称</label>
+                                        <span class="col-lg-2">客户名称</span>
                                         <span class="col-lg-4 CustomName">--</span>
-                                        <label class="col-lg-2">送达方名称</label>
+                                        <span class="col-lg-2">送达方名称</span>
                                         <span class="col-lg-4 DestName">--</span>
                                         <div class="clearfix visible-lg-block"></div>
-                                        <label class="col-lg-2">总重量(kg)</label>
+                                        <span class="col-lg-2">总重量(kg)</span>
                                         <span class="col-lg-4 Weight">--</span>
-                                        <label class="col-lg-2">总体积(m3)</label>
+                                        <span class="col-lg-2">总体积(m3)</span>
                                         <span class="col-lg-4 Volume">--</span>
                                         <div class="clearfix visible-lg-block"></div>
-                                        <label class="col-lg-2">备注</label>
-                                        <span class="col-lg-4 note">--</span>
                                     </div>
                                 </div>
-                                <div class="" class="Commodities">
-                                    <h5 class="text-primary">商品信息</h5>
-                                    <div class="clearfloat text-center">
-                                        <label class="col-lg-1">#</label>
-                                        <label class="col-lg-5">物料名称</label>
-                                        <label class="col-lg-2">数量</label>
-                                        <label class="col-lg-2">重量</label>
-                                        <label class="col-lg-2">体积</label>
+                                <div class="Commodities clearfloat">
+                                    <div class="ordertitle">商品信息</div>
+                                    <div class="orderinfo commoditiesTitle clearfloat text-left">
+                                        <span class="col-lg-2">编号</span>
+                                        <span class="col-lg-6">名称</span>
+                                        <span class="col-lg-2">型号?</span>
+                                        <span class="col-lg-2">数量</span>
                                     </div>
-                                    <div class="clearfloat text-center CommoditiesList"></div>
+                                    <!--<div class="clearfloat text-left CommoditiesList listbox orderinfo"></div>-->
+                                    <div class="clearfloat text-left listbox  mCustomScrollbar" data-mcs-theme="minimal">
+                                        <div class="CommoditiesList orderinfo clearfloat"></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane" id="ReciveInfo">
-                                <label class="col-lg-2">送货省市区</label>
-                                <span class="col-lg-4 SendArea">--</span>
-                                <label class="col-lg-2">提货省市区</label>
-                                <span class="col-lg-4 GetArea">--</span>
-                                <div class="clearfix visible-lg-block"></div>
-                                <label class="col-lg-2">送货地址</label>
-                                <span class="col-lg-10 SendAddress">--</span>
-                                <div class="clearfix visible-lg-block"></div>
-                                <label class="col-lg-2">提货地址</label>
-                                <span class="col-lg-10 GetAddress">--</span>
-                                <div class="clearfix visible-lg-block"></div>
-                                <label class="col-lg-2">收获联系人</label>
-                                <span class="col-lg-4 ReciveMan">--</span>
-                                <label class="col-lg-2">提货联系人</label>
-                                <span class="col-lg-4 GetMan">--</span>
-                                <div class="clearfix visible-lg-block"></div>
-                                <label class="col-lg-2">收货人电话</label>
-                                <span class="col-lg-4 ReciveNum">--</span>
-                                <label class="col-lg-2">提货人电话</label>
-                                <span class="col-lg-4 GetNum">--</span>
-                                <div class="clearfix visible-lg-block"></div>
-                                <label class="col-lg-2">服务级别</label>
-                                <span class="col-lg-4 ServiceType">--</span>
-                                <label class="col-lg-2">运输方式</label>
-                                <span class="col-lg-4 TransportType">--</span>
-                                <div class="clearfix visible-lg-block"></div>
-                                <label class="col-lg-2">签收标准</label>
-                                <span class="col-lg-10 SignType">--</span>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="TransportInfo">
-                                <div class="clearfloat text-center">
-                                    <label class="col-lg-4">时间</label>
-                                    <label class="col-lg-8">操作</label>
-                                </div>
-                                <div class="clearfloat text-left TransportInfoList">
-                                    <span class="col-lg-2">2016-10-13</span>
-                                    <span class="col-lg-2">09:25:00</span>
-                                    <span class="col-lg-8">客户已自提</span>
-                                </div>
+                            <div role="tabpanel" class="tab-pane clearfloat" id="TransportInfo">
+                                <div class="clearfloat text-left TransportInfoList orderinfo"></div>
                             </div>
                         </div>
                     </div>

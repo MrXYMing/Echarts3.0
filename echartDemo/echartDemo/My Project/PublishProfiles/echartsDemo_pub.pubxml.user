@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+您 Web 项目的发布/打包进程将使用此文件。您可以通过编辑此 MSBuild 文件
+来自定义该进程的行为。若要了解与此相关的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=208121。
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>D:\echartsDemo_pub</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/echartDemo.dll">
+      <publishTime>07/17/2017 16:12:48</publishTime>
+    </File>
+    <File Include="bin/echartDemo.xml">
+      <publishTime>07/17/2017 16:12:48</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>06/18/2017 13:56:34</publishTime>
+    </File>
+    <File Include="echartService.asmx">
+      <publishTime>07/03/2017 14:55:02</publishTime>
+    </File>
+    <File Include="index.html">
+      <publishTime>07/17/2017 16:04:35</publishTime>
+    </File>
+    <File Include="Scripts/echarts.js">
+      <publishTime>07/14/2017 07:22:54</publishTime>
+    </File>
+    <File Include="Scripts/jquery-2.2.3.min.js">
+      <publishTime>06/14/2017 11:46:38</publishTime>
+    </File>
+    <File Include="Scripts/jquery.mCustomScrollbar.concat.min.js">
+      <publishTime>07/05/2017 14:27:12</publishTime>
+    </File>
+    <File Include="Scripts/js/anhui.js">
+      <publishTime>07/17/2017 10:52:17</publishTime>
+    </File>
+    <File Include="Scripts/js/aomen.js">
+      <publishTime>07/17/2017 10:55:00</publishTime>
+    </File>
+    <File Include="Scripts/js/beijing.js">
+      <publishTime>07/17/2017 10:54:28</publishTime>
+    </File>
+    <File Include="Scripts/js/china.js">
+      <publishTime>07/14/2017 08:17:32</publishTime>
+    </File>
+    <File Include="Scripts/js/chongqing.js">
+      <publishTime>07/17/2017 10:54:51</publishTime>
+    </File>
+    <File Include="Scripts/js/fujian.js">
+      <publishTime>07/17/2017 10:52:21</publishTime>
+    </File>
+    <File Include="Scripts/js/gansu.js">
+      <publishTime>07/17/2017 10:54:13</publishTime>
+    </File>
+    <File Include="Scripts/js/guangdong.js">
+      <publishTime>07/17/2017 10:53:37</publishTime>
+    </File>
+    <File Include="Scripts/js/guangxi.js">
+      <publishTime>07/17/2017 10:53:40</publishTime>
+    </File>
+    <File Include="Scripts/js/guizhou.js">
+      <publishTime>07/14/2017 13:43:25</publishTime>
+    </File>
+    <File Include="Scripts/js/hainan.js">
+      <publishTime>07/17/2017 10:53:43</publishTime>
+    </File>
+    <File Include="Scripts/js/hebei.js">
+      <publishTime>07/17/2017 10:51:17</publishTime>
+    </File>
+    <File Include="Scripts/js/heilongjiang.js">
+      <publishTime>07/17/2017 10:52:04</publishTime>
+    </File>
+    <File Include="Scripts/js/henan.js">
+      <publishTime>07/17/2017 10:52:36</publishTime>
+    </File>
+    <File Include="Scripts/js/hubei.js">
+      <publishTime>07/14/2017 13:43:21</publishTime>
+    </File>
+    <File Include="Scripts/js/hunan.js">
+      <publishTime>07/14/2017 11:42:47</publishTime>
+    </File>
+    <File Include="Scripts/js/jiangsu.js">
+      <publishTime>07/17/2017 10:52:08</publishTime>
+    </File>
+    <File Include="Scripts/js/jiangxi.js">
+      <publishTime>07/17/2017 10:52:27</publishTime>
+    </File>
+    <File Include="Scripts/js/jilin.js">
+      <publishTime>07/17/2017 10:51:52</publishTime>
+    </File>
+    <File Include="Scripts/js/liaoning.js">
+      <publishTime>07/17/2017 10:51:46</publishTime>
+    </File>
+    <File Include="Scripts/js/neimenggu.js">
+      <publishTime>07/17/2017 10:51:41</publishTime>
+    </File>
+    <File Include="Scripts/js/ningxia.js">
+      <publishTime>07/17/2017 10:54:22</publishTime>
+    </File>
+    <File Include="Scripts/js/qinghai.js">
+      <publishTime>07/17/2017 10:54:17</publishTime>
+    </File>
+    <File Include="Scripts/js/shandong.js">
+      <publishTime>07/17/2017 10:52:32</publishTime>
+    </File>
+    <File Include="Scripts/js/shanghai.js">
+      <publishTime>07/17/2017 10:54:46</publishTime>
+    </File>
+    <File Include="Scripts/js/shanxi.js">
+      <publishTime>07/17/2017 10:51:35</publishTime>
+    </File>
+    <File Include="Scripts/js/shanxi1.js">
+      <publishTime>07/17/2017 10:54:09</publishTime>
+    </File>
+    <File Include="Scripts/js/sichuan.js">
+      <publishTime>07/17/2017 10:53:47</publishTime>
+    </File>
+    <File Include="Scripts/js/taiwan.js">
+      <publishTime>07/17/2017 10:55:03</publishTime>
+    </File>
+    <File Include="Scripts/js/tianjin.js">
+      <publishTime>07/17/2017 10:54:42</publishTime>
+    </File>
+    <File Include="Scripts/js/xianggang.js">
+      <publishTime>07/17/2017 10:54:56</publishTime>
+    </File>
+    <File Include="Scripts/js/xinjiang.js">
+      <publishTime>07/17/2017 10:54:25</publishTime>
+    </File>
+    <File Include="Scripts/js/xizang.js">
+      <publishTime>07/17/2017 10:54:02</publishTime>
+    </File>
+    <File Include="Scripts/js/yunnan.js">
+      <publishTime>07/17/2017 10:53:58</publishTime>
+    </File>
+    <File Include="Scripts/js/zhejiang.js">
+      <publishTime>07/17/2017 10:52:13</publishTime>
+    </File>
+    <File Include="Scripts/json/china.json">
+      <publishTime>07/14/2017 07:57:43</publishTime>
+    </File>
+    <File Include="Scripts/provinces.js">
+      <publishTime>07/17/2017 16:16:02</publishTime>
+    </File>
+    <File Include="Scripts/provinces2.js">
+      <publishTime>07/17/2017 11:28:01</publishTime>
+    </File>
+    <File Include="Src/g.png">
+      <publishTime>07/06/2017 17:47:02</publishTime>
+    </File>
+    <File Include="Src/jquery.mCustomScrollbar.min.css">
+      <publishTime>07/05/2017 14:27:12</publishTime>
+    </File>
+    <File Include="Src/style.css">
+      <publishTime>07/13/2017 15:25:01</publishTime>
+    </File>
+    <File Include="Src/x1.png">
+      <publishTime>07/06/2017 17:46:57</publishTime>
+    </File>
+    <File Include="Src/x2.png">
+      <publishTime>07/06/2017 17:47:00</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>07/17/2017 16:16:09</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

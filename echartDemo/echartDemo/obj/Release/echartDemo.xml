@@ -1,0 +1,148 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+echartDemo
+</name>
+</assembly>
+<members>
+<member name="P:echartDemo.My.MyWebExtension.Computer">
+	<summary>
+ 返回有关主计算机的信息。
+ </summary>
+</member><member name="P:echartDemo.My.MyWebExtension.User">
+	<summary>
+ 返回当前 Web 用户的信息。
+ </summary>
+</member><member name="P:echartDemo.My.MyWebExtension.Request">
+	<summary>
+ 返回 Request 对象。
+ </summary>
+</member><member name="P:echartDemo.My.MyWebExtension.Response">
+	<summary>
+ 返回 Response 对象。
+ </summary>
+</member><member name="P:echartDemo.My.MyWebExtension.Log">
+	<summary>
+ 返回 Asp 日志对象。
+ </summary>
+</member><member name="T:echartDemo.My.MyWebExtension">
+	<summary>
+ 用于定义 Web 项目的“My 命名空间”中可用属性的模块。
+ </summary>
+	<remarks></remarks>
+</member><member name="F:echartDemo.TimeLine.datetime">
+	<summary>
+ 时间
+ </summary>
+</member><member name="F:echartDemo.TimeLine.address">
+	<summary>
+ 地址
+ </summary>
+</member><member name="F:echartDemo.TimeLine.event">
+	<summary>
+ 事件
+ </summary>
+</member><member name="T:echartDemo.TimeLine">
+	<summary>
+ 时间线
+ </summary>
+</member><member name="M:echartDemo.IMapControl.GetContryWarehouse">
+	<summary>
+ 获取全国省市仓信息
+ </summary>
+	<returns>省市仓列表，包括名字，经度和纬度</returns>
+</member><member name="M:echartDemo.IMapControl.GetProvinceWarehouse(System.String)">
+	<summary>
+ 获取省里面的仓库和销售点
+ </summary>
+	<param name="province">省</param>
+	<returns>该省所有的地图点</returns>
+</member><member name="M:echartDemo.IMapControl.GetContryMainTransport">
+	<summary>
+ 获取全国干线运输信息
+ </summary>
+	<returns>运输线列表,实线，虚线</returns>
+</member><member name="M:echartDemo.IMapControl.GetProvinceTransport(System.String)">
+	<summary>
+ 获取全省支线运输信息
+ </summary>
+	<param name="province">省</param>
+	<returns>运输线列表，实线，虚线</returns>
+</member><member name="M:echartDemo.IMapControl.GetTransportOrderInfor(System.String)">
+	<summary>
+ 获取运输单的详细信息
+ </summary>
+	<param name="orderNO">运输单号</param>
+	<returns>时间节点信息</returns>
+</member><member name="T:echartDemo.IMapControl">
+	<summary>
+ 地图接口
+ </summary>
+</member><member name="F:echartDemo.TransportOrder.warehouse">
+	<summary>
+ 仓库号
+ </summary>
+</member><member name="F:echartDemo.TransportOrder.NO">
+	<summary>
+ 运单编号
+ </summary>
+</member><member name="F:echartDemo.TransportOrder.mailNO">
+	<summary>
+ 快递单号
+ </summary>
+</member><member name="F:echartDemo.TransportOrder.count">
+	<summary>
+ 数量
+ </summary>
+</member><member name="F:echartDemo.TransportOrder.type">
+	<summary>
+ 运输方式
+ </summary>
+</member><member name="T:echartDemo.TransportOrder">
+	<summary>
+ 运单
+ </summary>
+</member><member name="F:echartDemo.TransportLine.from">
+	<summary>
+ 起点
+ </summary>
+</member><member name="F:echartDemo.TransportLine.to">
+	<summary>
+ 终点
+ </summary>
+</member><member name="F:echartDemo.TransportLine.count">
+	<summary>
+ 数量
+ </summary>
+</member><member name="T:echartDemo.TransportLine">
+	<summary>
+ 运输线
+ </summary>
+</member><member name="F:echartDemo.TransportLineEx.name">
+	<summary>
+ 起点
+ </summary>
+</member><member name="T:echartDemo.TransportLineEx">
+	<summary>
+ 运输线
+ </summary>
+</member><member name="F:echartDemo.MapPoint.name">
+	<summary>
+ 仓库名称
+ </summary>
+</member><member name="F:echartDemo.MapPoint.lot">
+	<summary>
+ 经度
+ </summary>
+</member><member name="F:echartDemo.MapPoint.lat">
+	<summary>
+ 维度
+ </summary>
+</member><member name="T:echartDemo.MapPoint">
+	<summary>
+ 仓库
+ </summary>
+</member>
+</members>
+</doc>
